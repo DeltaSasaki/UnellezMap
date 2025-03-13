@@ -218,6 +218,18 @@ include 'coords.php';
         }
     }
 
+    // Función para limpiar la ruta
+    function limpiarRuta() {
+        if (controlRuta) {
+            mapa.removeControl(controlRuta);
+            controlRuta = null;
+        }
+        if (rutaORS) {
+            mapa.removeLayer(rutaORS);
+            rutaORS = null;
+        }
+    }
+
     // Función para mostrar el menú contextual
     function mostrarMenuContextual(e) {
         const menu = L.popup()
@@ -233,8 +245,11 @@ include 'coords.php';
 
     // Función para seleccionar el punto A
     function seleccionarPuntoA(lat, lng) {
-        limpiarMapa();
+        limpiarRuta();
         puntoA = L.latLng(lat, lng);
+        if (markerPuntoA) {
+            mapa.removeLayer(markerPuntoA);
+        }
         markerPuntoA = L.marker(puntoA).addTo(mapa).bindPopup("Punto A (Origen)").openPopup();
         if (puntoB) {
             calcularRuta();
@@ -243,8 +258,11 @@ include 'coords.php';
 
     // Función para seleccionar el punto B
     function seleccionarPuntoB(lat, lng) {
-        limpiarMapa();
+        limpiarRuta();
         puntoB = L.latLng(lat, lng);
+        if (markerPuntoB) {
+            mapa.removeLayer(markerPuntoB);
+        }
         markerPuntoB = L.marker(puntoB).addTo(mapa).bindPopup("Punto B (Destino)").openPopup();
         if (puntoA) {
             calcularRuta();
