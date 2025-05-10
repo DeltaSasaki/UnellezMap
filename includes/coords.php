@@ -9,11 +9,11 @@ $marcadores = [
         'descripcion' => 'Zona Principal Barinas I', // Nueva descripción
     ],
     [
-        'nombre' => 'Jardín Botánico',
+        'nombre' => 'Oficina de barinas I',
         'latitud' => 8.620537897407088,
         'longitud' => -70.24419353033177,
         'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
-        'descripcion' => 'Jardín Botánico de la UNELLEZ',
+        'descripcion' => 'Oficina de barinas I',
     ],
     [
         'nombre' => 'Barinas II',

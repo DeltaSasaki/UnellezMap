@@ -73,7 +73,7 @@ include 'coords.php';
 <div id="map"></div>
 
 <footer>
-    <p>&copy; 2023 Mi Proyecto</p>
+    <p>&copy; 2025 UNELLEZ MAP</p>
 </footer>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
