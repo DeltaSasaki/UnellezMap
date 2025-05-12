@@ -25,9 +25,9 @@ main {
 /* Asegura que el footer tenga un tamaño fijo y esté visible */
 footer {
     flex-shrink: 0;
-    height: 60px; /* Ajusta la altura según sea necesario */
+    height: 30px; /* Ajusta la altura según sea necesario */
     text-align: center;
-    line-height: 60px; /* Centra el texto verticalmente */
+    line-height: 0px; /* Centra el texto verticalmente */
     z-index: 2; /* Asegura que el footer esté por encima del mapa */
     position: relative; /* Mantiene el footer en el flujo del diseño */
         background-color: #333;

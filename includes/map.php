@@ -19,12 +19,19 @@ include 'coords.php';
 
 <div id="map"></div>
 
+<!-- Botón AR añadido -->
+<button id="btnAR" style="display:none; position: absolute; top: 80px; right: 10px; z-index: 1000;">
+  Activar guía en Realidad Aumentada
+</button>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
 <script>
     // Inicializa el mapa y lo centra en la primera ubicación
-    const mapa = L.map('map').setView([<?= $marcadores[0]['latitud'] ?>, <?= $marcadores[0]['longitud'] ?>], 17);
+    const mapa = L.map('map', {
+        zoomControl: false // Desactiva los controles de zoom
+    }).setView([<?= $marcadores[0]['latitud'] ?>, <?= $marcadores[0]['longitud'] ?>], 17);
 
     // Define las capas de mapas
     const capas = {
@@ -34,11 +41,13 @@ include 'coords.php';
         "OpenTopoMap": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }),
-        "CyclOSM": L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }),
-        "Satélite (ESRI)": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+
+        "Satelital": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, USDA, USGS, AEX, GeoEye, IGN, and others'
+        }),
+
+        "Modo Oscuro": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
         })
     };
 
@@ -245,6 +254,9 @@ include 'coords.php';
                 const coordenadas = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
                 rutaORS = L.polyline(coordenadas, {color: 'blue'}).addTo(mapa);
                 mapa.fitBounds(rutaORS.getBounds());
+
+                // Mostrar botón de AR si hay ruta
+                document.getElementById("btnAR").style.display = "block";
             })
             .catch(error => console.error("Error obteniendo la ruta:", error));
     }
@@ -277,9 +289,65 @@ include 'coords.php';
         );
     }
 
+    // Variable para almacenar el marcador de la posición actual
+    let marcadorUsuario = null;
+
+    // Función para habilitar la geolocalización en tiempo real
+    function habilitarGeolocalizacion() {
+        if (!navigator.geolocation) {
+            alert("La geolocalización no está soportada por tu navegador.");
+            return;
+        }
+
+        // Observa la posición del usuario en tiempo real
+        navigator.geolocation.watchPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                // Si ya existe un marcador, actualiza su posición
+                if (marcadorUsuario) {
+                    marcadorUsuario.setLatLng([lat, lng]);
+                } else {
+                    // Si no existe, crea un nuevo marcador
+                    marcadorUsuario = L.marker([lat, lng], {
+                        icon: L.icon({
+                            iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', // Ícono personalizado
+                            iconSize: [25, 25]
+                        })
+                    }).bindPopup("Estás aquí").addTo(mapa);
+                }
+
+                // Centra el mapa en la posición del usuario
+                mapa.setView([lat, lng], 17);
+            },
+            (error) => {
+                console.error("Error obteniendo la ubicación en tiempo real:", error);
+                alert("No se pudo obtener tu ubicación en tiempo real. Por favor, verifica los permisos de geolocalización.");
+            },
+            {
+                enableHighAccuracy: true, // Usa la mayor precisión posible
+                maximumAge: 0, // No usa caché
+                timeout: 10000 // Tiempo máximo de espera
+            }
+        );
+    }
+
+    // Llama a la función para habilitar la geolocalización en tiempo real
+    habilitarGeolocalizacion();
+
     // Escucha el evento de clic en el mapa
     mapa.on('click', mostrarMenuContextual);
-</script>
 
+    // Función para redirigir a AR
+    document.getElementById("btnAR").addEventListener("click", () => {
+        if (!puntoA || !puntoB) {
+            alert("Define una ruta primero");
+            return;
+        }
+        const url = `includes/ar.php?aLat=${puntoA.lat}&aLng=${puntoA.lng}&bLat=${puntoB.lat}&bLng=${puntoB.lng}`;
+        window.location.href = url;
+    });
+</script>
 </body>
 </html>
