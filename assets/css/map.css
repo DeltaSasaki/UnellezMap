@@ -1,0 +1,86 @@
+/* Asegura que el body y el html ocupen el 100% del alto */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* El contenedor principal ocupa todo el espacio disponible */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Asegura que el mapa respete el flujo del diseño */
+    z-index: 1; /* Asegura que el mapa no cubra otros elementos */
+}
+
+/* Ajusta el mapa para que ocupe todo el espacio disponible en el main */
+#map {
+    flex: 1;
+    height: auto; /* Se ajusta automáticamente al contenedor */
+    z-index: 0; /* Asegura que el mapa no se superponga al footer */
+}
+
+/* Asegura que el footer tenga un tamaño fijo y esté visible */
+footer {
+    flex-shrink: 0;
+    height: 60px; /* Ajusta la altura según sea necesario */
+    text-align: center;
+    line-height: 60px; /* Centra el texto verticalmente */
+    z-index: 2; /* Asegura que el footer esté por encima del mapa */
+    position: relative; /* Mantiene el footer en el flujo del diseño */
+        background-color: #333;
+            color: white;
+    padding: 10px;
+}
+
+.info.legend {
+    background: white;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+#search {
+    position: absolute;
+    top: 10px;
+    left: 50px;
+    z-index: 1000;
+    padding: 5px;
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+#suggestions {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+}
+#suggestions div {
+    padding: 5px;
+    cursor: pointer;
+}
+#suggestions div:hover {
+    background-color: #f0f0f0;
+}
+.menu-contextual {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+.menu-contextual button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    padding: 5px;
+    cursor: pointer;
+}

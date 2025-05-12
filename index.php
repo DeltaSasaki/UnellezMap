@@ -11,7 +11,7 @@ include 'includes/navbar.php';
 // Contenido principal
 ?>
 <main>
-    <div id="map" style="height: 100vh; width: 100%;"></div>
+    <?php include 'includes/map.php'; ?>
 </main>
 
 <?php
