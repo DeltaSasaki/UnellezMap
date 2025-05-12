@@ -318,8 +318,8 @@ include 'coords.php';
                     }).bindPopup("Estás aquí").addTo(mapa);
                 }
 
-                // Centra el mapa en la posición del usuario
-                mapa.setView([lat, lng], 17);
+                // Elimina esta línea para evitar que la cámara se enfoque automáticamente
+                // mapa.setView([lat, lng], 17);
             },
             (error) => {
                 console.error("Error obteniendo la ubicación en tiempo real:", error);
