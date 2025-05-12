@@ -66,6 +66,7 @@ include 'coords.php';
                 <h3>${marcador.nombre}</h3>
                 ${marcador.imagen ? `<img src="${marcador.imagen}" alt="${marcador.nombre}" style="width: 100%;">` : ''}
                 <p>${marcador.descripcion}</p>
+                <button onclick="irA(${marcador.latitud}, ${marcador.longitud})">Quiero ir ahí</button>
             `);
         layerMarcadores.addLayer(marker);
     });
@@ -212,32 +213,31 @@ include 'coords.php';
         }
     }
 
-    // Función para calcular la ruta
+    // Función para calcular la ruta usando OpenRouteService
     function calcularRuta() {
         const modoTransporte = document.getElementById('modoTransporte').value;
 
-        if (modoTransporte === 'walking') {
-            obtenerRutaOpenRouteService(puntoA, puntoB);
-        } else {
-            controlRuta = L.Routing.control({
-                waypoints: [puntoA, puntoB],
-                routeWhileDragging: true,
-                show: true,
-                addWaypoints: false,
-                draggableWaypoints: false,
-                fitSelectedRoutes: true,
-                router: L.Routing.osrmv1({
-                    serviceUrl: "https://router.project-osrm.org/route/v1",
-                    profile: "driving"
-                })
-            }).addTo(mapa);
+        // Limpia la ruta actual antes de recalcular
+        limpiarRuta();
+
+        if (puntoA && puntoB) {
+            let perfil = '';
+            if (modoTransporte === 'walking') {
+                perfil = 'foot-walking'; // Perfil para peatones
+            } else if (modoTransporte === 'driving') {
+                perfil = 'driving-car'; // Perfil para vehículos
+            }
+
+            if (perfil) {
+                obtenerRutaOpenRouteService(puntoA, puntoB, perfil);
+            }
         }
     }
 
     // Función para obtener la ruta desde OpenRouteService
-    function obtenerRutaOpenRouteService(puntoA, puntoB) {
+    function obtenerRutaOpenRouteService(puntoA, puntoB, perfil) {
         const apiKey = '5b3ce3597851110001cf62489581e06f9b72467e9439db10cfffedf9';
-        const url = `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${apiKey}&start=${puntoA.lng},${puntoA.lat}&end=${puntoB.lng},${puntoB.lat}`;
+        const url = `https://api.openrouteservice.org/v2/directions/${perfil}?api_key=${apiKey}&start=${puntoA.lng},${puntoA.lat}&end=${puntoB.lng},${puntoB.lat}`;
 
         fetch(url)
             .then(response => response.json())
@@ -247,6 +247,34 @@ include 'coords.php';
                 mapa.fitBounds(rutaORS.getBounds());
             })
             .catch(error => console.error("Error obteniendo la ruta:", error));
+    }
+
+    // Escucha el cambio en el selector de modo de transporte
+    document.getElementById('modoTransporte').addEventListener('change', calcularRuta);
+
+    // Función para obtener la posición actual del usuario y calcular la ruta
+    function irA(destLat, destLng) {
+        if (!navigator.geolocation) {
+            alert("La geolocalización no está soportada por tu navegador.");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                // Establece el punto A como la posición actual del usuario
+                seleccionarPuntoA(userLat, userLng);
+
+                // Establece el punto B como el destino seleccionado
+                seleccionarPuntoB(destLat, destLng);
+            },
+            (error) => {
+                alert("No se pudo obtener tu ubicación. Por favor, verifica los permisos de geolocalización.");
+                console.error("Error de geolocalización:", error);
+            }
+        );
     }
 
     // Escucha el evento de clic en el mapa
