@@ -249,16 +249,19 @@ include 'coords.php';
         const url = `https://api.openrouteservice.org/v2/directions/${perfil}?api_key=${apiKey}&start=${puntoA.lng},${puntoA.lat}&end=${puntoB.lng},${puntoB.lat}`;
 
         fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const coordenadas = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
-                rutaORS = L.polyline(coordenadas, {color: 'blue'}).addTo(mapa);
-                mapa.fitBounds(rutaORS.getBounds());
+    .then(response => response.json())
+    .then(data => {
+        const coordenadas = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+        rutaORS = L.polyline(coordenadas, { color: 'blue' }).addTo(mapa);
+        mapa.fitBounds(rutaORS.getBounds());
 
-                // Mostrar botón de AR si hay ruta
-                document.getElementById("btnAR").style.display = "block";
-            })
-            .catch(error => console.error("Error obteniendo la ruta:", error));
+        // ✅ Guarda la ruta en localStorage
+        localStorage.setItem("ruta_AR", JSON.stringify(coordenadas));
+
+        // Muestra el botón de AR
+        document.getElementById("btnAR").style.display = "block";
+    })
+    .catch(error => console.error("Error obteniendo la ruta:", error));
     }
 
     // Escucha el cambio en el selector de modo de transporte
@@ -341,13 +344,13 @@ include 'coords.php';
 
     // Función para redirigir a AR
     document.getElementById("btnAR").addEventListener("click", () => {
-        if (!puntoA || !puntoB) {
-            alert("Define una ruta primero");
-            return;
-        }
-        const url = `includes/ar.php?aLat=${puntoA.lat}&aLng=${puntoA.lng}&bLat=${puntoB.lat}&bLng=${puntoB.lng}`;
-        window.location.href = url;
-    });
+    if (!puntoA || !puntoB) {
+        alert("Define una ruta primero");
+        return;
+    }
+    // ✅ Se abre en una pestaña nueva y sin parámetros
+    window.open(`includes/ar.php`, "_blank");
+});
 </script>
 </body>
 </html>
