@@ -1,19 +1,19 @@
 <?php
 // Coordenadas y datos de los marcadores
 $marcadores = [
-    [
+    /* [
         'nombre' => 'Barinas I',
         'latitud' => 8.62135123464879,
         'longitud' => -70.2447734342809,
         'imagen' => 'assets/img/Barinas_I.png', // No tiene imagen
         'descripcion' => 'Zona Principal Barinas I', // Nueva descripción
-    ],
+    ], */
     [
-        'nombre' => 'Oficina de barinas I',
-        'latitud' => 8.620537897407088,
-        'longitud' => -70.24419353033177,
-        'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
-        'descripcion' => 'Oficina de barinas I',
+        'nombre' => 'Subprograma de Ingeniería',
+        'latitud' => 8.620509880080142, 
+        'longitud' =>  -70.24414887803064,
+        'imagen' => 'assets/img/Subprograma_ingenieria_oficina.jpg', // Ruta de la imagen
+        'descripcion' => 'Subprograma de Ingeniería', // Nueva descripción
     ],
     [
         'nombre' => 'Barinas II',
@@ -26,7 +26,7 @@ $marcadores = [
         'nombre' => 'Comedor',
         'latitud' => 8.622968, 
         'longitud' => -70.246126,
-        'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
+        'imagen' => 'assets/img/comedor.jpg', // Ruta de la imagen
         'descripcion' => 'Comedor',
     ],
     [
@@ -58,11 +58,20 @@ $marcadores = [
         'descripcion' => 'Cubículos de los programas UNELLEZ',
     ],
     [
-        'nombre' => 'Arse Central',
-        'latitud' => 8.617515446117125,
-        'longitud' => -70.24301936539052,
-        'imagen' => 'assets/img/foto.jpg',
-        'descripcion' => 'Arse Central',
+        'nombre' => 'Arse',
+        'latitud' => 8.617407383985746, 
+        'longitud' => -70.24322499336651,
+        'imagen' => 'assets/img/arse.jpg',
+        'descripcion' => 'Arse',
+    ],
+
+
+      [
+        'nombre' => 'Auditorio de Arse',
+        'latitud' =>  8.621630616851817, 
+        'longitud' => -70.24421427450439,
+        'imagen' => 'assets/img/auditorio_barinas1.jpg',
+        'descripcion' => 'Auditorio de Arse',
     ],
     [
         'nombre' => 'Cabaña de Servicio Comunitario',
@@ -75,7 +84,7 @@ $marcadores = [
         'nombre' => 'Bomberos Universitarios',
         'latitud' => 8.618638439849486,
         'longitud' => -70.24364571487882,
-        'imagen' => 'assets/img/foto.jpg',
+        'imagen' => 'assets/img/Bombero_unellez.jpg',
         'descripcion' => 'Bomberos Universitarios',
     ],
     [
@@ -103,7 +112,7 @@ $marcadores = [
         'nombre' => 'Cafetín de Arse',
         'latitud' => 8.617471849671581,
         'longitud' => -70.2432933868183,
-        'imagen' => 'assets/img/foto.jpg',
+        'imagen' => 'assets/img/Cafetin_arse.jpg',
         'descripcion' => 'Cafetín de Arse',
     ],
     [
@@ -132,7 +141,7 @@ $marcadores = [
         'nombre' => 'Cafetín 1 barinas I',
         'latitud' => 8.620599543578946,
         'longitud' =>   -70.24488352980819,
-        'imagen' => 'assets/img/foto.jpg',
+        'imagen' => 'assets/img/cafetin_barinas1.jpg',
         'descripcion' => 'Cafetín 1',
     ],
 
@@ -140,7 +149,7 @@ $marcadores = [
         'nombre' => 'Cafetín 2 Barinas II',
         'latitud' => 8.621795851870946,
         'longitud' =>  -70.24542828413603,
-        'imagen' => 'assets/img/foto.jpg',
+        'imagen' => 'assets/img/cafetin2_barinas1.jpg',
         'descripcion' => 'Cafetín 2',
     ],
 
@@ -167,5 +176,19 @@ $marcadores = [
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Estacionamiento de Barinas I',
     ],
+    [
+    'nombre' => 'p3b1',
+    'latitud' => 8.621332927296173,
+    'longitud' =>    -70.24542723395504,
+    'imagen' => 'assets/img/p3b1_barinas1.jpg',
+    'descripcion' => 'Punto identificado como p3b1',
+],
+[
+    'nombre' => 'p3b10',
+    'latitud' => 8.621260643834855,
+    'longitud' => -70.24428250935469,
+    'imagen' => 'assets/img/p3b10_barinas1.jpg',
+    'descripcion' => 'Punto identificado como p3b10',
+],
 ];
 ?>

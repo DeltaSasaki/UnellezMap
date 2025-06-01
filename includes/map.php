@@ -19,10 +19,40 @@ include 'coords.php';
 
 <div id="map"></div>
 
+<!-- Menú de capas personalizado -->
+<div id="gearControl" class="leaflet-control leaflet-bar" title="Opciones de mapa">
+  <img src="assets/img/gear.png" alt="Opciones" style="width: 24px; height: 24px;">
+</div>
+
+<div id="mapLayersMenu" class="map-layers-menu">
+  <label><input type="radio" name="mapa" value="osm" checked> OpenStreetMap</label>
+  <label><input type="radio" name="mapa" value="topo"> OpenTopoMap</label>
+  <label><input type="radio" name="mapa" value="satelite"> Satelital</label>
+  <label><input type="radio" name="mapa" value="oscuro"> Modo Oscuro</label>
+
+    <hr style="margin: 8px 0;">
+
+  <label for="modoTransporte"><strong>Modo de transporte</strong></label>
+  <select id="modoTransporte" style="margin-top: 4px; width: 100%;">
+    <option value="walking">Peatón</option>
+    <option value="driving">Vehículo</option>
+  </select>
+</div>
+
+<!-- Panel tipo tarjeta -->
+<div id="infoPanel" class="info-panel">
+  <button id="closePanel">&times;</button>
+  <h3 id="infoTitulo"></h3>
+  <img id="infoImagen" src="" alt="Imagen" />
+  <p id="infoDescripcion"></p>
+  <button id="btnIr" disabled>Quiero ir ahí</button>
+</div>
+
+
 <!-- Botón AR añadido -->
-<button id="btnAR" style="display:none; position: absolute; top: 80px; right: 10px; z-index: 1000;">
-  Activar guía en Realidad Aumentada
-</button>
+<div id="btnAR" class="leaflet-control leaflet-bar" title="Guía AR">
+  <img src="assets/img/virtual-reality.png" alt="AR" style="width: 26px; height: 26px;">
+</div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
@@ -34,25 +64,43 @@ include 'coords.php';
     }).setView([<?= $marcadores[0]['latitud'] ?>, <?= $marcadores[0]['longitud'] ?>], 17);
 
     // Define las capas de mapas
-    const capas = {
-        "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }),
-        "OpenTopoMap": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-            attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }),
+const capas = {
+    "osm": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }),
+    "topo": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data: &copy; OpenStreetMap contributors'
+    }),
+    "satelite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri'
+    }),
+    "oscuro": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; CartoDB'
+    })
+};
 
-        "Satelital": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, USDA, USGS, AEX, GeoEye, IGN, and others'
-        }),
+let capaActual = capas["osm"];
+capaActual.addTo(mapa);
 
-        "Modo Oscuro": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
-        })
-    };
+ 
 
-    capas["OpenStreetMap"].addTo(mapa);
-    L.control.layers(capas).addTo(mapa);
+    document.getElementById("gearControl").addEventListener("click", () => {
+    const menu = document.getElementById("mapLayersMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+});
+
+document.querySelectorAll('input[name="mapa"]').forEach(input => {
+    input.addEventListener("change", (e) => {
+        const valor = e.target.value;
+        if (capas[valor]) {
+            mapa.removeLayer(capaActual);
+            capaActual = capas[valor];
+            capaActual.addTo(mapa);
+        }
+        document.getElementById("mapLayersMenu").style.display = "none";
+    });
+});
+
 
     // Almacena los marcadores en un array
     const marcadores = [
@@ -68,18 +116,22 @@ include 'coords.php';
     ];
 
     // Añade los marcadores al mapa
-    const layerMarcadores = L.layerGroup();
-    marcadores.forEach(marcador => {
-        const marker = L.marker([marcador.latitud, marcador.longitud])
-            .bindPopup(`
-                <h3>${marcador.nombre}</h3>
-                ${marcador.imagen ? `<img src="${marcador.imagen}" alt="${marcador.nombre}" style="width: 100%;">` : ''}
-                <p>${marcador.descripcion}</p>
-                <button onclick="irA(${marcador.latitud}, ${marcador.longitud})">Quiero ir ahí</button>
-            `);
-        layerMarcadores.addLayer(marker);
-    });
-    layerMarcadores.addTo(mapa);
+const layerMarcadores = L.layerGroup();
+marcadores.forEach(marcador => {
+    const marker = L.marker([marcador.latitud, marcador.longitud])
+        .on('click', () => {
+            document.getElementById("infoTitulo").textContent = marcador.nombre;
+            document.getElementById("infoImagen").src = marcador.imagen;
+            document.getElementById("infoDescripcion").textContent = marcador.descripcion;
+            document.getElementById("btnIr").disabled = false;
+            document.getElementById("btnIr").onclick = () => {
+                irA(marcador.latitud, marcador.longitud);
+            };
+            document.getElementById("infoPanel").classList.add("show");
+        });
+    layerMarcadores.addLayer(marker);
+});
+layerMarcadores.addTo(mapa);
 
     // Función para buscar lugares y mostrar sugerencias
     function buscarLugar() {
@@ -133,19 +185,7 @@ include 'coords.php';
     let controlRuta = null;
     let rutaORS = null;
 
-    // Añade un selector para el modo de transporte
-    const selectorTransporte = L.control({position: 'topright'});
-    selectorTransporte.onAdd = function () {
-        const div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = `
-            <select id="modoTransporte">
-                <option value="driving">Vehículo</option>
-                <option value="walking">Peatón</option>
-            </select>
-        `;
-        return div;
-    };
-    selectorTransporte.addTo(mapa);
+
 
     // Variables para almacenar los marcadores de los puntos A y B
     let markerPuntoA = null;
@@ -259,7 +299,11 @@ include 'coords.php';
         localStorage.setItem("ruta_AR", JSON.stringify(coordenadas));
 
         // Muestra el botón de AR
-        document.getElementById("btnAR").style.display = "block";
+const btnAR = document.getElementById("btnAR");
+btnAR.style.display = "flex";
+setTimeout(() => {
+    btnAR.style.opacity = "1";
+}, 10);
     })
     .catch(error => console.error("Error obteniendo la ruta:", error));
     }
@@ -326,7 +370,7 @@ include 'coords.php';
             },
             (error) => {
                 console.error("Error obteniendo la ubicación en tiempo real:", error);
-                alert("No se pudo obtener tu ubicación en tiempo real. Por favor, verifica los permisos de geolocalización.");
+               // alert("No se pudo obtener tu ubicación en tiempo real. Por favor, verifica los permisos de geolocalización.");
             },
             {
                 enableHighAccuracy: true, // Usa la mayor precisión posible
@@ -340,16 +384,39 @@ include 'coords.php';
     habilitarGeolocalizacion();
 
     // Escucha el evento de clic en el mapa
-    mapa.on('click', mostrarMenuContextual);
+ mapa.on('click', function (e) {
+    const target = e.originalEvent.target;
+
+    // Ignorar clics sobre el select, el botón de AR, y otros controles interactivos
+    const isControl = target.closest('#modoTransporte') || target.closest('#btnAR') || target.closest('.leaflet-control');
+    
+    if (!isControl) {
+        mostrarMenuContextual(e);
+    }
+});
+
 
     // Función para redirigir a AR
-    document.getElementById("btnAR").addEventListener("click", () => {
+document.getElementById("btnAR").addEventListener("click", () => {
     if (!puntoA || !puntoB) {
-        alert("Define una ruta primero");
+        console.warn("Ruta no definida para guía AR");
         return;
     }
-    // ✅ Se abre en una pestaña nueva y sin parámetros
     window.open(`includes/ar.php`, "_blank");
+});
+
+// Cierre del panel
+document.getElementById("closePanel").addEventListener("click", () => {
+    document.getElementById("infoPanel").classList.remove("show");
+    document.getElementById("btnIr").disabled = true;
+});
+
+document.addEventListener('click', function(e) {
+    const gear = document.getElementById("gearControl");
+    const menu = document.getElementById("mapLayersMenu");
+    if (!gear.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = "none";
+    }
 });
 </script>
 </body>

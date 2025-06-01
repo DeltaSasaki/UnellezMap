@@ -4,6 +4,7 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Evita el scroll en el body */
 }
 
 /* El contenedor principal ocupa todo el espacio disponible */
@@ -44,13 +45,16 @@ footer {
 #search {
     position: absolute;
     top: 10px;
-    left: 50px;
+    left: 10px;
+    right: 100px; /* espacio para AR y engranaje */
     z-index: 1000;
     padding: 5px;
-    width: 250px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    width: auto;
+    max-width: calc(100% - 120px); /* en móvil, asegura que no se monte */
 }
+
 #suggestions {
     position: absolute;
     top: 40px;
@@ -83,4 +87,188 @@ footer {
     margin: 5px 0;
     padding: 5px;
     cursor: pointer;
+}
+
+#btnAR {
+    position: absolute;
+    top: 10px;
+    right: 54px; /* perfectamente a la izquierda del engranaje */
+    width: 34px;
+    height: 34px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;              /* centra el ícono */
+    align-items: center;        /* centra verticalmente */
+    justify-content: center;    /* centra horizontalmente */
+    border-radius: 4px;
+    padding: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+#btnAR img {
+    max-width: 24px;
+    max-height: 24px;
+    object-fit: contain;
+}
+
+#btnAR .label-ar {
+    display: none;
+    font-size: 12px;
+    color: #333;
+    margin-top: 2px;
+    font-weight: bold;
+}
+
+#btnAR:hover {
+    background-color: #e6f0ff;
+}
+
+
+@media (max-width: 768px) {
+    #btnAR {
+        top: 10px;
+        right: 54px; /* igual que en escritorio para mantener alineación */
+    }
+}
+
+.info-panel {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    width: 260px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 600;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.info-panel.show {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+}
+
+.info-panel h3 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.info-panel img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+.info-panel p {
+    font-size: 14px;
+    margin: 8px 0 0 0;
+}
+
+.info-panel button {
+    padding: 6px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#closePanel {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: transparent;
+    color: #333;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .info-panel {
+    position: fixed;
+    left: 50%;
+    width: 260px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    transform: translate(-50%, 20px); /* ← animación de entrada desde abajo */
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .info-panel.show {
+    opacity: 1;
+    transform: translate(-50%, 0); /* ← se desliza hacia arriba */
+    pointer-events: all;
+  }
+}
+
+
+
+
+/* Estilos para el control de capas del mapa */
+
+#gearControl {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.map-layers-menu {
+    position: absolute;
+    top: 54px;
+    right: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    z-index: 1000;
+    padding: 8px 12px;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.map-layers-menu label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.map-layers-menu input[type="radio"] {
+    margin-right: 6px;
 }
