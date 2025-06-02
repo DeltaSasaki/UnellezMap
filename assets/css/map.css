@@ -300,22 +300,31 @@ footer {
   position: absolute;
   bottom: 80px;
   right: 20px;
+  width: 48px;
+  height: 48px;
   background-color: #f44336;
   color: white;
+  font-size: 24px;
+  font-weight: bold;
   border: none;
-  padding: 10px 14px;
-  font-size: 20px;
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  display: none; /* ← oculto por defecto */
+  display: none; /* oculto por defecto */
   z-index: 1001;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 #btnLimpiar:hover {
   background-color: #d32f2f;
   transform: scale(1.1);
 }
+
 
 @keyframes bounce-in {
   0% { transform: scale(0.2); opacity: 0; }

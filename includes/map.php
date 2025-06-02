@@ -77,6 +77,10 @@ include 'coords.php';
         zoomControl: false // Desactiva los controles de zoom
     }).setView([<?= $marcadores[0]['latitud'] ?>, <?= $marcadores[0]['longitud'] ?>], 17);
 
+    // 👇 AÑADE ESTO
+document.getElementById("btnLimpiar").style.display = "none";
+document.getElementById("btnAR").style.display = "none";
+
     // Define las capas de mapas
 const capas = {
     "osm": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -180,6 +184,7 @@ const layerMarcadores = L.layerGroup();
 marcadores.forEach(marcador => {
     const marker = L.marker([marcador.latitud, marcador.longitud], { icon: iconCoords }) // ← Usa iconCoords aquí
         .on('click', () => {
+            const btnIr = document.getElementById("btnIr");
             // Cierra el menú de capas si está abierto
             const menu = document.getElementById("mapLayersMenu");
             if (menu.style.display === "block") {
@@ -255,7 +260,12 @@ layerMarcadores.addTo(mapa);
     let controlRuta = null;
     let rutaORS = null;
 
-
+// 👉 Al cambiar el modo de transporte, recalcula la ruta si ya hay puntos definidos
+document.getElementById('modoTransporte').addEventListener('change', () => {
+    if (puntoA && puntoB) {
+        calcularRuta();
+    }
+});
 
     // Variables para almacenar los marcadores de los puntos A y B
     let markerPuntoA = null;
@@ -272,6 +282,7 @@ function limpiarRuta() {
         rutaORS = null;
     }
     document.getElementById("btnLimpiar").style.display = "none";
+    document.getElementById("btnAR").style.display = "none";
 }
 
 function limpiarMapa() {
@@ -354,25 +365,23 @@ function seleccionarPuntoB(lat, lng) {
 }
 
     // Función para calcular la ruta usando OpenRouteService
-    function calcularRuta() {
-        const modoTransporte = document.getElementById('modoTransporte').value;
+function calcularRuta() {
+    limpiarRuta(); // Elimina la ruta existente
+    const modoTransporte = document.getElementById('modoTransporte').value;
 
-        // Limpia la ruta actual antes de recalcular
-        limpiarRuta();
+    if (puntoA && puntoB) {
+        let perfil = '';
+        if (modoTransporte === 'walking') {
+            perfil = 'foot-walking'; // Perfil para peatones
+        } else if (modoTransporte === 'driving') {
+            perfil = 'driving-car'; // Perfil para vehículos
+        }
 
-        if (puntoA && puntoB) {
-            let perfil = '';
-            if (modoTransporte === 'walking') {
-                perfil = 'foot-walking'; // Perfil para peatones
-            } else if (modoTransporte === 'driving') {
-                perfil = 'driving-car'; // Perfil para vehículos
-            }
-
-            if (perfil) {
-                obtenerRutaOpenRouteService(puntoA, puntoB, perfil);
-            }
+        if (perfil) {
+            obtenerRutaOpenRouteService(puntoA, puntoB, perfil);
         }
     }
+}
 
     // Función para obtener la ruta desde OpenRouteService
 function obtenerRutaOpenRouteService(puntoA, puntoB, perfil) {
@@ -514,6 +523,37 @@ document.addEventListener('click', function(e) {
 
 document.getElementById("btnLimpiar").addEventListener("click", limpiarMapa);
 
+function irA(destLat, destLng) {
+    const btn = document.getElementById("btnIr");
+    btn.textContent = "Obteniendo ubicación...";
+    btn.disabled = true;
+
+    if (!navigator.geolocation) {
+        alert("La geolocalización no está soportada por tu navegador.");
+        btn.textContent = "Quiero ir ahí";
+        btn.disabled = false;
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+
+            seleccionarPuntoA(userLat, userLng); // define el origen
+            seleccionarPuntoB(destLat, destLng); // define el destino
+
+            btn.textContent = "Quiero ir ahí";
+            btn.disabled = false;
+        },
+        (error) => {
+            alert("No se pudo obtener tu ubicación. Por favor, verifica los permisos de geolocalización.");
+            console.error("Error de geolocalización:", error);
+            btn.textContent = "Quiero ir ahí";
+            btn.disabled = false;
+        }
+    );
+}
 
 </script>
 </body>
