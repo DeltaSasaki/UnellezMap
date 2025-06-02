@@ -54,6 +54,20 @@ include 'coords.php';
   <img src="assets/img/virtual-reality.png" alt="AR" style="width: 26px; height: 26px;">
 </div>
 
+<!-- Panel deslizable para selección de punto -->
+<div id="panelMarcador" class="panel-marcador" style="display: none; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 1001; text-align: center;">
+  <p style="margin-bottom: 10px; font-weight: bold;">¿Qué punto deseas marcar?</p>
+  <div style="display: flex; justify-content: center; gap: 10px;">
+    <button onclick="seleccionarPuntoA(latTmp, lngTmp)">📍 Punto A</button>
+    <button onclick="seleccionarPuntoB(latTmp, lngTmp)">🏁 Punto B</button>
+  </div>
+</div>
+
+<button id="btnLimpiar" title="Limpiar ruta">&#x274C;</button>
+
+<!-- GIF que aparece en el lugar del clic -->
+<img id="gifMarcador" src="assets/img/Marcador_tocar.gif" alt="Indicador" style="display: none; position: absolute; width: 40px; height: 40px; z-index: 1002;">
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
@@ -84,10 +98,28 @@ capaActual.addTo(mapa);
 
  
 
-    document.getElementById("gearControl").addEventListener("click", () => {
+document.getElementById("gearControl").addEventListener("click", () => {
     const menu = document.getElementById("mapLayersMenu");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
+    const panel = document.getElementById("infoPanel");
+    const panelMarcador = document.getElementById("panelMarcador");
+
+    const abierto = menu.style.display === "block";
+
+    // Si se va a abrir el menú, cierra el panel si está abierto
+    if (!abierto && panel.classList.contains("show")) {
+        panel.classList.remove("show");
+        document.getElementById("btnIr").disabled = true;
+    }
+
+    // Cierra el panel de selección de punto si está abierto
+    if (!abierto && panelMarcador.style.display === "block") {
+        panelMarcador.style.display = "none";
+    }
+
+    // Alterna visibilidad del menú
+    menu.style.display = abierto ? "none" : "block";
 });
+
 
 document.querySelectorAll('input[name="mapa"]').forEach(input => {
     input.addEventListener("change", (e) => {
@@ -115,11 +147,46 @@ document.querySelectorAll('input[name="mapa"]').forEach(input => {
         <?php endforeach; ?>
     ];
 
-    // Añade los marcadores al mapa
+    // Ícono para puntos del sistema (coords.php)
+const iconCoords = L.icon({
+    iconUrl: 'assets/img/icon_coords.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
+});
+
+// Ícono para punto A (origen)
+const iconPuntoA = L.icon({
+    iconUrl: 'assets/img/iconPuntoA.png',
+    iconSize: [34, 34],
+    iconAnchor: [17, 34]
+});
+
+// Ícono para punto B (destino)
+const iconPuntoB = L.icon({
+    iconUrl: 'assets/img/IconPuntoB.png',
+    iconSize: [34, 34],
+    iconAnchor: [17, 34]
+});
+
+// Ícono del usuario (posición actual)
+const iconUsuario = L.icon({
+    iconUrl: 'assets/img/IconUsuario.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 30]
+});
+
+// Añade los marcadores al mapa
 const layerMarcadores = L.layerGroup();
 marcadores.forEach(marcador => {
-    const marker = L.marker([marcador.latitud, marcador.longitud])
+    const marker = L.marker([marcador.latitud, marcador.longitud], { icon: iconCoords }) // ← Usa iconCoords aquí
         .on('click', () => {
+            // Cierra el menú de capas si está abierto
+            const menu = document.getElementById("mapLayersMenu");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            }
+
+            // Muestra el panel con info
             document.getElementById("infoTitulo").textContent = marcador.nombre;
             document.getElementById("infoImagen").src = marcador.imagen;
             document.getElementById("infoDescripcion").textContent = marcador.descripcion;
@@ -148,20 +215,23 @@ layerMarcadores.addTo(mapa);
                 const div = document.createElement('div');
                 div.textContent = marcador.nombre;
                 div.addEventListener('click', () => {
-                    // Centra el mapa en el marcador seleccionado
-                    mapa.setView([marcador.latitud, marcador.longitud], 17);
-                    // Abre el popup del marcador
-                    const marker = layerMarcadores.getLayers().find(layer => 
-                        layer.getLatLng().lat === marcador.latitud && 
-                        layer.getLatLng().lng === marcador.longitud
-                    );
-                    if (marker) {
-                        marker.openPopup();
-                    }
-                    // Limpia el campo de búsqueda y las sugerencias
-                    document.getElementById('search').value = '';
-                    suggestions.style.display = 'none';
-                });
+    // Centra el mapa en el marcador seleccionado
+    mapa.setView([marcador.latitud, marcador.longitud], 17);
+
+    // Mostrar la información del marcador
+    document.getElementById("infoTitulo").textContent = marcador.nombre;
+    document.getElementById("infoImagen").src = marcador.imagen;
+    document.getElementById("infoDescripcion").textContent = marcador.descripcion;
+    document.getElementById("btnIr").disabled = false;
+    document.getElementById("btnIr").onclick = () => {
+        irA(marcador.latitud, marcador.longitud);
+    };
+    document.getElementById("infoPanel").classList.add("show");
+
+    // Limpia el campo de búsqueda y las sugerencias
+    document.getElementById('search').value = '';
+    suggestions.style.display = 'none';
+});
                 suggestions.appendChild(div);
             });
             suggestions.style.display = 'block';
@@ -192,75 +262,96 @@ layerMarcadores.addTo(mapa);
     let markerPuntoB = null;
 
     // Función para limpiar los puntos y la ruta
-    function limpiarMapa() {
-        if (controlRuta) {
-            mapa.removeControl(controlRuta);
-            controlRuta = null;
-        }
-        if (rutaORS) {
-            mapa.removeLayer(rutaORS);
-            rutaORS = null;
-        }
-        if (markerPuntoA) {
-            mapa.removeLayer(markerPuntoA);
-            markerPuntoA = null;
-        }
-        if (markerPuntoB) {
-            mapa.removeLayer(markerPuntoB);
-            markerPuntoB = null;
-        }
+function limpiarRuta() {
+    if (controlRuta) {
+        mapa.removeControl(controlRuta);
+        controlRuta = null;
+    }
+    if (rutaORS) {
+        mapa.removeLayer(rutaORS);
+        rutaORS = null;
+    }
+    document.getElementById("btnLimpiar").style.display = "none";
+}
+
+function limpiarMapa() {
+    limpiarRuta(); // Ya limpia el botón
+    if (markerPuntoA) {
+        mapa.removeLayer(markerPuntoA);
+        markerPuntoA = null;
+    }
+    if (markerPuntoB) {
+        mapa.removeLayer(markerPuntoB);
+        markerPuntoB = null;
+    }
+    puntoA = null;
+    puntoB = null;
+}
+
+// Variables temporales
+let latTmp = 0, lngTmp = 0;
+let marcadorTemporalGIF = null;
+
+// Reemplaza popup por panel moderno
+function mostrarMenuContextual(e) {
+    latTmp = e.latlng.lat;
+    lngTmp = e.latlng.lng;
+
+    // Muestra el panel flotante
+    const panel = document.getElementById("panelMarcador");
+    panel.style.display = "block";
+
+    // Si ya existe un marcador temporal, lo elimina
+    if (marcadorTemporalGIF) {
+        mapa.removeLayer(marcadorTemporalGIF);
     }
 
-    // Función para limpiar la ruta
-    function limpiarRuta() {
-        if (controlRuta) {
-            mapa.removeControl(controlRuta);
-            controlRuta = null;
-        }
-        if (rutaORS) {
-            mapa.removeLayer(rutaORS);
-            rutaORS = null;
-        }
-    }
+    // Crea un nuevo ícono con el GIF
+const iconoGIF = L.icon({
+    iconUrl: 'assets/img/Marcador_tocar.gif',
+    iconSize: [40, 40],        // Escalado visual (puedes ajustar este tamaño)
+    iconAnchor: [20, 20]       // Centro exacto del ícono
+});
 
-    // Función para mostrar el menú contextual
-    function mostrarMenuContextual(e) {
-        const menu = L.popup()
-            .setLatLng(e.latlng)
-            .setContent(`
-                <div class="menu-contextual">
-                    <button onclick="seleccionarPuntoA(${e.latlng.lat}, ${e.latlng.lng})">Punto A</button>
-                    <button onclick="seleccionarPuntoB(${e.latlng.lat}, ${e.latlng.lng})">Punto B</button>
-                </div>
-            `)
-            .openOn(mapa);
-    }
+    // Agrega el marcador GIF en la ubicación clickeada
+    marcadorTemporalGIF = L.marker(e.latlng, { icon: iconoGIF }).addTo(mapa);
+}
+
 
     // Función para seleccionar el punto A
-    function seleccionarPuntoA(lat, lng) {
-        limpiarRuta();
-        puntoA = L.latLng(lat, lng);
-        if (markerPuntoA) {
-            mapa.removeLayer(markerPuntoA);
-        }
-        markerPuntoA = L.marker(puntoA).addTo(mapa).bindPopup("Punto A (Origen)").openPopup();
-        if (puntoB) {
-            calcularRuta();
-        }
+ function seleccionarPuntoA(lat, lng) {
+    document.getElementById("panelMarcador").style.display = "none";
+    if (marcadorTemporalGIF) {
+        mapa.removeLayer(marcadorTemporalGIF);
+        marcadorTemporalGIF = null;
     }
+    limpiarRuta();
+    puntoA = L.latLng(lat, lng);
+    if (markerPuntoA) {
+        mapa.removeLayer(markerPuntoA);
+    }
+    markerPuntoA = L.marker(puntoA, { icon: iconPuntoA }).addTo(mapa);
+    if (puntoB) {
+        calcularRuta();
+    }
+}
 
-    // Función para seleccionar el punto B
-    function seleccionarPuntoB(lat, lng) {
-        limpiarRuta();
-        puntoB = L.latLng(lat, lng);
-        if (markerPuntoB) {
-            mapa.removeLayer(markerPuntoB);
-        }
-        markerPuntoB = L.marker(puntoB).addTo(mapa).bindPopup("Punto B (Destino)").openPopup();
-        if (puntoA) {
-            calcularRuta();
-        }
+function seleccionarPuntoB(lat, lng) {
+    document.getElementById("panelMarcador").style.display = "none";
+    if (marcadorTemporalGIF) {
+        mapa.removeLayer(marcadorTemporalGIF);
+        marcadorTemporalGIF = null;
     }
+    limpiarRuta();
+    puntoB = L.latLng(lat, lng);
+    if (markerPuntoB) {
+        mapa.removeLayer(markerPuntoB);
+    }
+    markerPuntoB = L.marker(puntoB, { icon: iconPuntoB }).addTo(mapa);
+    if (puntoA) {
+        calcularRuta();
+    }
+}
 
     // Función para calcular la ruta usando OpenRouteService
     function calcularRuta() {
@@ -284,57 +375,47 @@ layerMarcadores.addTo(mapa);
     }
 
     // Función para obtener la ruta desde OpenRouteService
-    function obtenerRutaOpenRouteService(puntoA, puntoB, perfil) {
-        const apiKey = '5b3ce3597851110001cf62489581e06f9b72467e9439db10cfffedf9';
-        const url = `https://api.openrouteservice.org/v2/directions/${perfil}?api_key=${apiKey}&start=${puntoA.lng},${puntoA.lat}&end=${puntoB.lng},${puntoB.lat}`;
+function obtenerRutaOpenRouteService(puntoA, puntoB, perfil) {
+    const url = `includes/ors_proxy.php?perfil=${perfil}&start=${puntoA.lng},${puntoA.lat}&end=${puntoB.lng},${puntoB.lat}`;
 
-        fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        const coordenadas = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
-        rutaORS = L.polyline(coordenadas, { color: 'blue' }).addTo(mapa);
-        mapa.fitBounds(rutaORS.getBounds());
-
-        // ✅ Guarda la ruta en localStorage
-        localStorage.setItem("ruta_AR", JSON.stringify(coordenadas));
-
-        // Muestra el botón de AR
-const btnAR = document.getElementById("btnAR");
-btnAR.style.display = "flex";
-setTimeout(() => {
-    btnAR.style.opacity = "1";
-}, 10);
-    })
-    .catch(error => console.error("Error obteniendo la ruta:", error));
-    }
-
-    // Escucha el cambio en el selector de modo de transporte
-    document.getElementById('modoTransporte').addEventListener('change', calcularRuta);
-
-    // Función para obtener la posición actual del usuario y calcular la ruta
-    function irA(destLat, destLng) {
-        if (!navigator.geolocation) {
-            alert("La geolocalización no está soportada por tu navegador.");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
-
-                // Establece el punto A como la posición actual del usuario
-                seleccionarPuntoA(userLat, userLng);
-
-                // Establece el punto B como el destino seleccionado
-                seleccionarPuntoB(destLat, destLng);
-            },
-            (error) => {
-                alert("No se pudo obtener tu ubicación. Por favor, verifica los permisos de geolocalización.");
-                console.error("Error de geolocalización:", error);
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener la ruta desde el servidor.");
             }
-        );
-    }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.features) {
+                throw new Error("Respuesta inválida de OpenRouteService");
+            }
+
+            const coordenadas = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+            rutaORS = L.polyline(coordenadas, { color: 'blue' }).addTo(mapa);
+            mapa.fitBounds(rutaORS.getBounds());
+
+            document.getElementById("btnLimpiar").style.display = "block";
+            localStorage.setItem("ruta_AR", JSON.stringify(coordenadas));
+
+            const panel = document.getElementById("infoPanel");
+            if (panel.classList.contains("show")) {
+                panel.classList.remove("show");
+                document.getElementById("btnIr").disabled = true;
+            }
+
+            const btnAR = document.getElementById("btnAR");
+            btnAR.style.display = "flex";
+            setTimeout(() => {
+                btnAR.style.opacity = "1";
+            }, 10);
+        })
+        .catch(error => {
+            console.warn("⚠️ No se pudo obtener la ruta:", error.message);
+            alert("No se pudo calcular la ruta. Verifica tu conexión o intenta más tarde.");
+        });
+}
+
+
 
     // Variable para almacenar el marcador de la posición actual
     let marcadorUsuario = null;
@@ -357,12 +438,8 @@ setTimeout(() => {
                     marcadorUsuario.setLatLng([lat, lng]);
                 } else {
                     // Si no existe, crea un nuevo marcador
-                    marcadorUsuario = L.marker([lat, lng], {
-                        icon: L.icon({
-                            iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', // Ícono personalizado
-                            iconSize: [25, 25]
-                        })
-                    }).bindPopup("Estás aquí").addTo(mapa);
+                    marcadorUsuario = L.marker([lat, lng], { icon: iconUsuario }) // ← Usa iconUsuario
+                        .bindPopup("Estás aquí").addTo(mapa);
                 }
 
                 // Elimina esta línea para evitar que la cámara se enfoque automáticamente
@@ -396,6 +473,22 @@ setTimeout(() => {
 });
 
 
+// Cierra el panel de selección de punto si se mueve el mapa
+mapa.on('movestart', function () {
+    const panelMarcador = document.getElementById("panelMarcador");
+    if (panelMarcador.style.display === "block") {
+        panelMarcador.style.display = "none";
+    }
+});
+
+// Cierra el panel de selección de punto al usar el buscador
+document.getElementById('search').addEventListener('input', function () {
+    const panelMarcador = document.getElementById("panelMarcador");
+    if (panelMarcador.style.display === "block") {
+        panelMarcador.style.display = "none";
+    }
+});
+
     // Función para redirigir a AR
 document.getElementById("btnAR").addEventListener("click", () => {
     if (!puntoA || !puntoB) {
@@ -418,6 +511,10 @@ document.addEventListener('click', function(e) {
         menu.style.display = "none";
     }
 });
+
+document.getElementById("btnLimpiar").addEventListener("click", limpiarMapa);
+
+
 </script>
 </body>
 </html>
