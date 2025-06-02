@@ -58,7 +58,9 @@ footer {
 #suggestions {
     position: absolute;
     top: 40px;
-    left: 50px;
+    width: 90%;
+    left: 5%;
+    max-width: 400px;
     z-index: 1000;
     background: white;
     border: 1px solid #ccc;
@@ -271,4 +273,55 @@ footer {
 
 .map-layers-menu input[type="radio"] {
     margin-right: 6px;
+}
+
+.toast-acciones {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+.toast-acciones button {
+  margin: 5px;
+  padding: 8px 16px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+}
+
+#btnLimpiar {
+  position: absolute;
+  bottom: 80px;
+  right: 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 20px;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  display: none; /* ← oculto por defecto */
+  z-index: 1001;
+}
+
+#btnLimpiar:hover {
+  background-color: #d32f2f;
+  transform: scale(1.1);
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.2); opacity: 0; }
+  80% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.marker-bounce {
+  animation: bounce-in 0.4s ease-out;
 }
