@@ -5,6 +5,25 @@ html, body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
+  background-color: #0f172a; /* mismo fondo que el footer */
+
+}
+
+/* Previene selección de texto o imágenes en todo el mapa */
+#map,
+#map * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+#gearControl img,
+#gearFilterControl img {
+  user-select: none;
+  pointer-events: auto;
+  -webkit-user-drag: none;
 }
 
 /* El contenedor principal ocupa todo el espacio disponible */
@@ -22,17 +41,51 @@ main {
     z-index: 0;
 }
 
-footer {
-    flex-shrink: 0;
-    height: 30px;
-    text-align: center;
-    line-height: 0px;
-    z-index: 2;
-    position: relative;
-    background-color: #333;
-    color: white;
-    padding: 10px;
+.footer-mapa-animado {
+  position: relative;
+  width: 100%;
+  padding: 14px 0;
+  text-align: center;
+  font-size: 14px;
+  background: linear-gradient(90deg, #0f172a, #1e293b, #0f172a);
+  color: #e2e8f0;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  z-index: 999;
+  animation: fadeInUp 0.8s ease;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+.footer-mapa-animado p {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.footer-mapa-animado strong {
+  color: #3b82f6;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.footer-mapa-animado strong:hover {
+  color: #60a5fa;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+    background-color: #0f172a; /* ← evita que se vea blanco al empezar */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    background-color: #0f172a;
+  }
+}
+
+
 
 .info.legend {
     background: white;
@@ -502,6 +555,36 @@ footer {
   border-radius: 50%;
   animation: pulse-animation 1s ease-out;
 }
+
+.alerta-mapa {
+  display: none;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #dc3545; /* Rojo tipo alerta */
+  color: white;
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+
+/* En tu archivo map.css */
+.leaflet-tooltip.custom-tooltip {
+  background-color: #1f2937;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 4px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
 
 @keyframes pulse-animation {
   0% {

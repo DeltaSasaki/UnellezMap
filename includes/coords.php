@@ -29,7 +29,7 @@ $marcadores = [
         'longitud' => -70.246126,
         'imagen' => 'assets/img/comedor_interior.jpg', // Ruta de la imagen
         'descripcion' => 'Comedor',
-                    'tipo' => 'recreacion',
+                    'tipo' => 'cafetin',
     ],
     [
         'nombre' => 'Domo universitario',
@@ -143,7 +143,7 @@ $marcadores = [
     [
         'nombre' => 'Cafetín 1 barinas I',
         'latitud' => 8.620599543578946,
-        'longitud' =>   -70.24488352980819,
+'longitud' => -70.24492352980819,   
         'imagen' => 'assets/img/cafetin_barinas1.jpg',
         'descripcion' => 'Cafetín 1',
         'tipo' => 'cafetin',
