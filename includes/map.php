@@ -14,8 +14,10 @@ include 'coords.php';
 </head>
 <body>
 
-<input type="text" id="search" placeholder="Buscar lugar...">
-<div id="suggestions"></div>
+<div class="search-wrapper">
+  <input type="text" id="search" placeholder="Buscar lugar..." autocomplete="off">
+  <div id="suggestions" class="suggestions-container"></div>
+</div>
 
 <div id="map"></div>
 
@@ -38,6 +40,26 @@ include 'coords.php';
     <option value="driving">Vehículo</option>
   </select>
 </div>
+
+<!-- Botón de filtro debajo del engranaje -->
+<div id="gearFilterControl" class="leaflet-control leaflet-bar" title="Filtrar por tipo">
+  <img src="assets/img/gear.png" alt="Filtrar" style="width: 24px; height: 24px;">
+</div>
+
+<div id="filtroTipos" class="filter-panel" style="display: none;">
+  <label><input type="checkbox" value="salon" checked> Salones</label><br>
+  <label><input type="checkbox" value="cubiculo" checked> Cubículos</label><br>
+  <label><input type="checkbox" value="laboratorio" checked> Laboratorios</label><br>
+  <label><input type="checkbox" value="oficina" checked> Oficinas</label><br>
+  <label><input type="checkbox" value="cafetin" checked> Cafetines</label><br>
+  <label><input type="checkbox" value="bano" checked> Baños</label><br>
+  <label><input type="checkbox" value="recreacion" checked> Zonas Recreativas</label><br>
+  <label><input type="checkbox" value="fotocopiadora" checked> Fotocopiadoras</label><br>
+  
+  <hr style="margin: 10px 0;">
+  <button id="btnReiniciarFiltros" style="width: 100%; padding: 5px;">Reiniciar filtros</button>
+</div>
+
 
 <!-- Panel tipo tarjeta -->
 <div id="infoPanel" class="info-panel">
@@ -68,10 +90,20 @@ include 'coords.php';
 <!-- GIF que aparece en el lugar del clic -->
 <img id="gifMarcador" src="assets/img/Marcador_tocar.gif" alt="Indicador" style="display: none; position: absolute; width: 40px; height: 40px; z-index: 1002;">
 
+<!-- Modal para imagen ampliada -->
+<div id="modalImagen" class="modal-imagen" style="display: none;">
+  <div class="modal-overlay"></div>
+  <div class="modal-contenido">
+    <span id="cerrarModal" class="modal-cerrar">&times;</span>
+    <img id="imagenAmpliada" src="" alt="Imagen ampliada">
+  </div>
+</div>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
 <script>
+    let ultimoMarcadorAnimado = null;
     // Inicializa el mapa y lo centra en la primera ubicación
     const mapa = L.map('map', {
         zoomControl: false // Desactiva los controles de zoom
@@ -102,26 +134,23 @@ capaActual.addTo(mapa);
 
  
 
+// Botón del menú de capas
 document.getElementById("gearControl").addEventListener("click", () => {
-    const menu = document.getElementById("mapLayersMenu");
-    const panel = document.getElementById("infoPanel");
-    const panelMarcador = document.getElementById("panelMarcador");
+    const menuCapas = document.getElementById("mapLayersMenu");
+    const menuFiltros = document.getElementById("filtroTipos");
+    const gearIcon = document.querySelector("#gearControl img");
 
-    const abierto = menu.style.display === "block";
+    const abierto = menuCapas.style.display === "block";
 
-    // Si se va a abrir el menú, cierra el panel si está abierto
-    if (!abierto && panel.classList.contains("show")) {
-        panel.classList.remove("show");
-        document.getElementById("btnIr").disabled = true;
-    }
+    // Cierra el otro menú
+    menuFiltros.style.display = "none";
 
-    // Cierra el panel de selección de punto si está abierto
-    if (!abierto && panelMarcador.style.display === "block") {
-        panelMarcador.style.display = "none";
-    }
+    menuCapas.style.display = abierto ? "none" : "block";
 
-    // Alterna visibilidad del menú
-    menu.style.display = abierto ? "none" : "block";
+    // Reinicia la animación SIEMPRE
+    gearIcon.classList.remove("spin-animation");
+    void gearIcon.offsetWidth; // ← fuerza reflow
+    gearIcon.classList.add("spin-animation");
 });
 
 
@@ -140,15 +169,16 @@ document.querySelectorAll('input[name="mapa"]').forEach(input => {
 
     // Almacena los marcadores en un array
     const marcadores = [
-        <?php foreach ($marcadores as $marcador): ?>
-            {
-                nombre: "<?= $marcador['nombre'] ?>",
-                latitud: <?= $marcador['latitud'] ?>,
-                longitud: <?= $marcador['longitud'] ?>,
-                imagen: "<?= $marcador['imagen'] ?>",
-                descripcion: "<?= $marcador['descripcion'] ?>"
-            },
-        <?php endforeach; ?>
+<?php foreach ($marcadores as $marcador): ?>
+    {
+        nombre: "<?= $marcador['nombre'] ?>",
+        latitud: <?= $marcador['latitud'] ?>,
+        longitud: <?= $marcador['longitud'] ?>,
+        imagen: "<?= $marcador['imagen'] ?>",
+        descripcion: "<?= $marcador['descripcion'] ?>",
+        tipo: "<?= strtolower($marcador['tipo'] ?? 'otro') ?>"
+    },
+<?php endforeach; ?>
     ];
 
     // Ícono para puntos del sistema (coords.php)
@@ -181,6 +211,8 @@ const iconUsuario = L.icon({
 
 // Añade los marcadores al mapa
 const layerMarcadores = L.layerGroup();
+const capasPorTipo = {};
+const referenciaMarcadores = {};
 marcadores.forEach(marcador => {
     const marker = L.marker([marcador.latitud, marcador.longitud], { icon: iconCoords }) // ← Usa iconCoords aquí
         .on('click', () => {
@@ -191,6 +223,8 @@ marcadores.forEach(marcador => {
                 menu.style.display = "none";
             }
 
+            
+
             // Muestra el panel con info
             document.getElementById("infoTitulo").textContent = marcador.nombre;
             document.getElementById("infoImagen").src = marcador.imagen;
@@ -200,50 +234,66 @@ marcadores.forEach(marcador => {
                 irA(marcador.latitud, marcador.longitud);
             };
             document.getElementById("infoPanel").classList.add("show");
+            resaltarMarcador(marcador.nombre);
+
         });
-    layerMarcadores.addLayer(marker);
+        referenciaMarcadores[marcador.nombre] = marker;
+if (!capasPorTipo[marcador.tipo]) {
+    capasPorTipo[marcador.tipo] = L.layerGroup().addTo(mapa);
+}
+
+capasPorTipo[marcador.tipo].addLayer(marker);
 });
 layerMarcadores.addTo(mapa);
 
     // Función para buscar lugares y mostrar sugerencias
-    function buscarLugar() {
-        const texto = document.getElementById('search').value.toLowerCase();
-        const resultados = marcadores.filter(marcador => 
-            marcador.nombre.toLowerCase().includes(texto)
-        );
+ function buscarLugar() {
+  const texto = document.getElementById('search').value.toLowerCase();
+  const resultados = marcadores.filter(marcador =>
+    marcador.nombre.toLowerCase().includes(texto)
+  );
 
-        const suggestions = document.getElementById('suggestions');
-        suggestions.innerHTML = ''; // Limpia las sugerencias anteriores
+  const suggestions = document.getElementById('suggestions');
+  suggestions.innerHTML = '';
 
-        if (texto && resultados.length > 0) {
-            resultados.forEach(marcador => {
-                const div = document.createElement('div');
-                div.textContent = marcador.nombre;
-                div.addEventListener('click', () => {
-    // Centra el mapa en el marcador seleccionado
-    mapa.setView([marcador.latitud, marcador.longitud], 17);
+  if (texto && resultados.length > 0) {
+    resultados.slice(0, 6).forEach(marcador => {
+      const div = document.createElement('div');
+      div.className = 'suggestion-item';
 
-    // Mostrar la información del marcador
-    document.getElementById("infoTitulo").textContent = marcador.nombre;
-    document.getElementById("infoImagen").src = marcador.imagen;
-    document.getElementById("infoDescripcion").textContent = marcador.descripcion;
-    document.getElementById("btnIr").disabled = false;
-    document.getElementById("btnIr").onclick = () => {
-        irA(marcador.latitud, marcador.longitud);
-    };
-    document.getElementById("infoPanel").classList.add("show");
+      const img = document.createElement('img');
+      img.src = marcador.imagen;
 
-    // Limpia el campo de búsqueda y las sugerencias
-    document.getElementById('search').value = '';
+      const span = document.createElement('span');
+      span.textContent = marcador.nombre;
+
+      div.appendChild(img);
+      div.appendChild(span);
+
+      div.addEventListener('click', () => {
+        resaltarMarcador(marcador.nombre);
+
+        mapa.setView([marcador.latitud, marcador.longitud], 17);
+        document.getElementById("infoTitulo").textContent = marcador.nombre;
+        document.getElementById("infoImagen").src = marcador.imagen;
+        document.getElementById("infoDescripcion").textContent = marcador.descripcion;
+        document.getElementById("btnIr").disabled = false;
+        document.getElementById("btnIr").onclick = () => {
+          irA(marcador.latitud, marcador.longitud);
+        };
+        document.getElementById("infoPanel").classList.add("show");
+
+        document.getElementById('search').value = '';
+        suggestions.style.display = 'none';
+      });
+
+      suggestions.appendChild(div);
+    });
+    suggestions.style.display = 'block';
+  } else {
     suggestions.style.display = 'none';
-});
-                suggestions.appendChild(div);
-            });
-            suggestions.style.display = 'block';
-        } else {
-            suggestions.style.display = 'none';
-        }
-    }
+  }
+}
 
     // Escucha el evento de entrada en el campo de búsqueda
     document.getElementById('search').addEventListener('input', buscarLugar);
@@ -273,6 +323,7 @@ document.getElementById('modoTransporte').addEventListener('change', () => {
 
     // Función para limpiar los puntos y la ruta
 function limpiarRuta() {
+    rutaActiva = false;
     if (controlRuta) {
         mapa.removeControl(controlRuta);
         controlRuta = null;
@@ -283,6 +334,7 @@ function limpiarRuta() {
     }
     document.getElementById("btnLimpiar").style.display = "none";
     document.getElementById("btnAR").style.display = "none";
+    mostrarTodosLosMarcadores();
 }
 
 function limpiarMapa() {
@@ -368,6 +420,8 @@ function seleccionarPuntoB(lat, lng) {
 function calcularRuta() {
     limpiarRuta(); // Elimina la ruta existente
     const modoTransporte = document.getElementById('modoTransporte').value;
+    ocultarTodosLosMarcadores();
+rutaActiva = true;
 
     if (puntoA && puntoB) {
         let perfil = '';
@@ -383,6 +437,14 @@ function calcularRuta() {
     }
 }
 
+function mostrarTodosLosMarcadores() {
+    Object.entries(capasPorTipo).forEach(([tipo, capa]) => {
+        const checkbox = document.querySelector(`#filtroTipos input[value="${tipo}"]`);
+        if (checkbox && checkbox.checked) {
+            capa.addTo(mapa);
+        }
+    });
+}
     // Función para obtener la ruta desde OpenRouteService
 function obtenerRutaOpenRouteService(puntoA, puntoB, perfil) {
     const url = `includes/ors_proxy.php?perfil=${perfil}&start=${puntoA.lng},${puntoA.lat}&end=${puntoB.lng},${puntoB.lat}`;
@@ -511,13 +573,26 @@ document.getElementById("btnAR").addEventListener("click", () => {
 document.getElementById("closePanel").addEventListener("click", () => {
     document.getElementById("infoPanel").classList.remove("show");
     document.getElementById("btnIr").disabled = true;
+        restaurarVisibilidadMarcadores();
 });
 
 document.addEventListener('click', function(e) {
-    const gear = document.getElementById("gearControl");
-    const menu = document.getElementById("mapLayersMenu");
-    if (!gear.contains(e.target) && !menu.contains(e.target)) {
-        menu.style.display = "none";
+    const gear1 = document.getElementById("gearControl");
+    const gear2 = document.getElementById("gearFilterControl");
+    const menu1 = document.getElementById("mapLayersMenu");
+    const menu2 = document.getElementById("filtroTipos");
+
+    const clicFuera = !gear1.contains(e.target) && !menu1.contains(e.target) &&
+                      !gear2.contains(e.target) && !menu2.contains(e.target);
+
+    if (clicFuera) {
+        const estabaAbierto = menu1.style.display === "block";
+        menu1.style.display = "none";
+        menu2.style.display = "none";
+
+        if (estabaAbierto) {
+            girarGearIcon(); // ← animar al cerrar el menú
+        }
     }
 });
 
@@ -554,6 +629,144 @@ function irA(destLat, destLng) {
         }
     );
 }
+
+document.getElementById("gearFilterControl").addEventListener("click", () => {
+    const menuFiltros = document.getElementById("filtroTipos");
+    const menuCapas = document.getElementById("mapLayersMenu");
+
+    const abierto = menuFiltros.style.display === "block";
+
+    // Cierra el otro menú
+    menuCapas.style.display = "none";
+
+    menuFiltros.style.display = abierto ? "none" : "block";
+});
+
+document.querySelectorAll('#filtroTipos input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        if (rutaActiva) return; // No hacer nada si la ruta está activa
+
+        const tipo = checkbox.value;
+        if (checkbox.checked) {
+            capasPorTipo[tipo]?.addTo(mapa);
+        } else {
+            capasPorTipo[tipo]?.remove();
+        }
+    });
+});
+
+function girarGearIcon() {
+    const gearIcon = document.querySelector("#gearControl img");
+    gearIcon.classList.remove("spin-animation");
+    void gearIcon.offsetWidth; // ← fuerza reflow
+    gearIcon.classList.add("spin-animation");
+}
+
+let rutaActiva = false;
+
+function ocultarTodosLosMarcadores() {
+    Object.values(capasPorTipo).forEach(capa => {
+        mapa.removeLayer(capa);
+    });
+}
+
+document.getElementById("btnReiniciarFiltros").addEventListener("click", () => {
+    // Marca todos los filtros como activos
+    document.querySelectorAll('#filtroTipos input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = true;
+    });
+
+    // Solo muestra los marcadores si no hay ruta activa
+    if (!rutaActiva) {
+        mostrarTodosLosMarcadores();
+    }
+});
+
+function resaltarMarcador(nombre) {
+    const marcador = referenciaMarcadores[nombre];
+    if (!marcador) return;
+
+    const latlng = marcador.getLatLng();
+
+    // Pulse fijo en el mapa
+    const pulseIcon = L.divIcon({
+        className: '',
+        html: '<div class="pulse-circle"></div>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+    });
+    const pulseMarker = L.marker(latlng, { icon: pulseIcon, interactive: false }).addTo(mapa);
+    setTimeout(() => mapa.removeLayer(pulseMarker), 1000);
+
+    // Restaurar el ícono del anterior marcador animado
+    if (ultimoMarcadorAnimado && ultimoMarcadorAnimado !== marcador) {
+        ultimoMarcadorAnimado.setIcon(iconCoords);
+    }
+
+    // Animación del nuevo ícono con zoom
+    const divZoomIcon = L.divIcon({
+        className: '',
+        html: '<img src="assets/img/icon_coords.png" id="zoomTemp" class="marker-zoom" style="width:32px;height:32px;">',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+    });
+
+    marcador.setIcon(divZoomIcon);
+    ultimoMarcadorAnimado = marcador;
+
+    ocultarMarcadoresCercanos(latlng);
+}
+
+
+
+
+function ocultarMarcadoresCercanos(latlngCentral) {
+    Object.entries(referenciaMarcadores).forEach(([nombre, marcador]) => {
+        const el = marcador.getElement();
+        if (!el) return;
+
+        const latlng = marcador.getLatLng();
+        const distancia = mapa.distance(latlng, latlngCentral);
+
+        if (distancia < 35 && !latlng.equals(latlngCentral)) {
+            el.classList.add("marker-muted");
+        } else {
+            el.classList.remove("marker-muted");
+        }
+    });
+}
+
+function restaurarVisibilidadMarcadores() {
+    Object.values(referenciaMarcadores).forEach(marcador => {
+        const el = marcador.getElement();
+        if (el) el.classList.remove("marker-muted");
+
+        // Restaurar ícono original si fue animado
+        if (marcador === ultimoMarcadorAnimado) {
+            marcador.setIcon(iconCoords);
+        }
+    });
+
+    ultimoMarcadorAnimado = null;
+}
+
+// Click sobre imagen del panel para abrir el modal
+document.getElementById("infoImagen").addEventListener("click", () => {
+  const src = document.getElementById("infoImagen").src;
+  document.getElementById("imagenAmpliada").src = src;
+  document.getElementById("modalImagen").style.display = "flex";
+});
+
+// Cerrar modal con botón
+document.getElementById("cerrarModal").addEventListener("click", () => {
+  document.getElementById("modalImagen").style.display = "none";
+});
+
+// Cerrar modal al hacer clic fuera de la imagen
+document.querySelector(".modal-overlay").addEventListener("click", () => {
+  document.getElementById("modalImagen").style.display = "none";
+});
+
 
 </script>
 </body>

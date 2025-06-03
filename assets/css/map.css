@@ -4,7 +4,7 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Evita el scroll en el body */
+    overflow: hidden;
 }
 
 /* El contenedor principal ocupa todo el espacio disponible */
@@ -12,27 +12,25 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    position: relative; /* Asegura que el mapa respete el flujo del diseño */
-    z-index: 1; /* Asegura que el mapa no cubra otros elementos */
+    position: relative;
+    z-index: 1;
 }
 
-/* Ajusta el mapa para que ocupe todo el espacio disponible en el main */
 #map {
     flex: 1;
-    height: auto; /* Se ajusta automáticamente al contenedor */
-    z-index: 0; /* Asegura que el mapa no se superponga al footer */
+    height: auto;
+    z-index: 0;
 }
 
-/* Asegura que el footer tenga un tamaño fijo y esté visible */
 footer {
     flex-shrink: 0;
-    height: 30px; /* Ajusta la altura según sea necesario */
+    height: 30px;
     text-align: center;
-    line-height: 0px; /* Centra el texto verticalmente */
-    z-index: 2; /* Asegura que el footer esté por encima del mapa */
-    position: relative; /* Mantiene el footer en el flujo del diseño */
-        background-color: #333;
-            color: white;
+    line-height: 0px;
+    z-index: 2;
+    position: relative;
+    background-color: #333;
+    color: white;
     padding: 10px;
 }
 
@@ -42,47 +40,101 @@ footer {
     border-radius: 5px;
     font-size: 14px;
 }
-#search {
+
+/* Envoltorio del input y sugerencias */
+.search-wrapper {
     position: absolute;
     top: 10px;
-    left: 10px;
-    right: 100px; /* espacio para AR y engranaje */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
     z-index: 1000;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: auto;
-    max-width: calc(100% - 120px); /* en móvil, asegura que no se monte */
 }
 
-#suggestions {
-    position: absolute;
-    top: 40px;
-    width: 90%;
-    left: 5%;
-    max-width: 400px;
-    z-index: 1000;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 250px;
-    max-height: 150px;
-    overflow-y: auto;
-    display: none;
+/* En móvil */
+@media (max-width: 768px) {
+  .search-wrapper {
+    left: 10px;
+    right: 100px;
+    transform: none;
+    max-width: calc(100% - 120px);
+  }
 }
+
+/* Estilo del input */
+#search {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  #search {
+    padding: 5px;
+    font-size: 14px;
+  }
+}
+
+/* Sugerencias */
+#suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  display: none;
+  max-height: 300px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  z-index: 1001;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.suggestion-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
 #suggestions div {
     padding: 5px;
     cursor: pointer;
 }
-#suggestions div:hover {
+/* #suggestions div:hover {
     background-color: #f0f0f0;
-}
+} */
+
 .menu-contextual {
     background: white;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
+
 .menu-contextual button {
     display: block;
     width: 100%;
@@ -94,23 +146,22 @@ footer {
 #btnAR {
     position: absolute;
     top: 10px;
-    right: 54px; /* perfectamente a la izquierda del engranaje */
+    right: 54px;
     width: 34px;
     height: 34px;
     background-color: #fff;
     border: 1px solid #ccc;
     z-index: 1000;
     cursor: pointer;
-    display: flex;              /* centra el ícono */
-    align-items: center;        /* centra verticalmente */
-    justify-content: center;    /* centra horizontalmente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 4px;
     padding: 0;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-        opacity: 0;
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
-
 
 #btnAR img {
     max-width: 24px;
@@ -130,12 +181,11 @@ footer {
     background-color: #e6f0ff;
 }
 
-
 @media (max-width: 768px) {
-    #btnAR {
-        top: 10px;
-        right: 54px; /* igual que en escritorio para mantener alineación */
-    }
+  #btnAR {
+    top: 10px;
+    right: 54px;
+  }
 }
 
 .info-panel {
@@ -150,7 +200,6 @@ footer {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-
     opacity: 0;
     transform: translateX(20px);
     pointer-events: none;
@@ -215,8 +264,7 @@ footer {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    transform: translate(-50%, 20px); /* ← animación de entrada desde abajo */
-
+    transform: translate(-50%, 20px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s ease, transform 0.4s ease;
@@ -224,15 +272,10 @@ footer {
 
   .info-panel.show {
     opacity: 1;
-    transform: translate(-50%, 0); /* ← se desliza hacia arriba */
+    transform: translate(-50%, 0);
     pointer-events: all;
   }
 }
-
-
-
-
-/* Estilos para el control de capas del mapa */
 
 #gearControl {
     position: absolute;
@@ -253,17 +296,17 @@ footer {
 .map-layers-menu {
     position: absolute;
     top: 54px;
-    right: 10px;
+    right: 54px; /* antes era 10px */
     background: white;
     border: 1px solid #ccc;
     border-radius: 6px;
-    z-index: 1000;
+    z-index: 1001;
     padding: 8px 12px;
     font-size: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     display: none;
     flex-direction: column;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    min-width: 180px;
 }
 
 .map-layers-menu label {
@@ -310,7 +353,7 @@ footer {
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  display: none; /* oculto por defecto */
+  display: none;
   z-index: 1001;
 
   display: flex;
@@ -325,6 +368,114 @@ footer {
   transform: scale(1.1);
 }
 
+#gearFilterControl {
+    position: absolute;
+    top: 54px; /* Justo debajo del engranaje */
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.filter-panel {
+    position: absolute;
+    top: 54px;
+    right: 54px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    z-index: 1001;
+    padding: 8px 12px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    min-width: 180px;
+}
+
+.filter-panel label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.marker-zoom {
+  transform: scale(1.4);
+  transition: transform 0.3s ease;
+  z-index: 9999 !important;
+}
+
+.modal-imagen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-contenido {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  z-index: 10000;
+}
+
+.modal-contenido img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.5);
+}
+
+.modal-cerrar {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: #fff;
+  color: #000;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+
+@keyframes zoom-resaltar {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.25); }
+  50%  { transform: scale(1); }
+  75%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.marker-zoom {
+  animation: zoom-resaltar 0.9s ease-in-out;
+  z-index: 9999 !important;
+}
+
+.marker-muted {
+  opacity: 0.15 !important;
+  transition: opacity 0.3s ease;
+}
 
 @keyframes bounce-in {
   0% { transform: scale(0.2); opacity: 0; }
@@ -333,4 +484,32 @@ footer {
 }
 .marker-bounce {
   animation: bounce-in 0.4s ease-out;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-animation {
+  animation: spin 0.6s ease-out;
+}
+
+.pulse-circle {
+  width: 30px;
+  height: 30px;
+  background: rgba(0, 136, 255, 0.3);
+  border-radius: 50%;
+  animation: pulse-animation 1s ease-out;
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
 }

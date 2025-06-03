@@ -14,20 +14,22 @@ $marcadores = [
         'longitud' =>  -70.24414887803064,
         'imagen' => 'assets/img/Subprograma_ingenieria_oficina.jpg', // Ruta de la imagen
         'descripcion' => 'Subprograma de Ingeniería', // Nueva descripción
+            'tipo' => 'oficina',
     ],
-    [
+    /*
         'nombre' => 'Barinas II',
         'latitud' => 8.624902224734308,
         'longitud' => -70.24690795789161,
         'imagen' => 'assets/img/Barinas_II.png', // Ruta de la imagen
         'descripcion' => 'Zona Principal Barinas II',
-    ],
+    ], */
     [
         'nombre' => 'Comedor',
         'latitud' => 8.622968, 
         'longitud' => -70.246126,
         'imagen' => 'assets/img/comedor_interior.jpg', // Ruta de la imagen
         'descripcion' => 'Comedor',
+                    'tipo' => 'recreacion',
     ],
     [
         'nombre' => 'Domo universitario',
@@ -35,20 +37,23 @@ $marcadores = [
         'longitud' => -70.248127,
         'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
         'descripcion' => 'Domo universitario',
+            'tipo' => 'recreacion',
     ],
-    [
-        'nombre' => 'Cancha de futbol UNELLEZ',
-        'latitud' => 8.623342847250514, 
-        'longitud' => -70.25011082293045,
-        'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
-        'descripcion' => 'Laboratorio de computación',
-    ],
+[
+    'nombre' => 'Cancha de futbol UNELLEZ',
+    'latitud' => 8.623342847250514, 
+    'longitud' => -70.25011082293045,
+    'imagen' => 'assets/img/foto.jpg',
+    'descripcion' => 'Cancha de fútbol UNELLEZ',
+    'tipo' => 'recreacion',
+],
     [
         'nombre' => 'Biblioteca UNELLEZ',
         'latitud' => 8.620025259078757, 
         'longitud' =>  -70.24742357425036,
         'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
         'descripcion' => 'Biblioteca',
+                    'tipo' => 'recreacion',
     ],
 
     [
@@ -57,6 +62,7 @@ $marcadores = [
         'longitud' => -70.2432065,
         'imagen' => 'assets/img/arse.jpg',
         'descripcion' => 'Arse',
+                'tipo' => 'oficina',
     ],
 
 
@@ -66,6 +72,7 @@ $marcadores = [
         'longitud' => -70.2441875,
         'imagen' => 'assets/img/auditorio_barinas1.jpg',
         'descripcion' => 'Auditorio de Arse',
+                            'tipo' => 'recreacion',
     ],
     
     [
@@ -74,6 +81,7 @@ $marcadores = [
         'longitud' => -70.24364571487882,
         'imagen' => 'assets/img/Bombero_unellez.jpg',
         'descripcion' => 'Bomberos Universitarios',
+            'tipo' => 'oficina',
     ],
     [
         'nombre' => 'Centro de Mejoramiento Genético',
@@ -81,6 +89,7 @@ $marcadores = [
         'longitud' => -70.24871345913655,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Centro de Mejoramiento Genético',
+            'tipo' => 'laboratorio',
     ],
     [
         'nombre' => 'Laguna de la Unellez',
@@ -88,6 +97,7 @@ $marcadores = [
         'longitud' => -70.24590703928638,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Laguna de la Unellez',
+            'tipo' => 'recreacion',
     ],
     [
         'nombre' => 'Estacionamiento del Jardin Botanico',
@@ -95,6 +105,7 @@ $marcadores = [
         'longitud' => -70.25153934279038,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Estacionamiento del Jardin Botanico',
+        'tipo' => 'estacionamiento',
     ],
     [
         'nombre' => 'Cafetín de Arse',
@@ -102,6 +113,7 @@ $marcadores = [
         'longitud' => -70.2432796,
         'imagen' => 'assets/img/Cafetin_arse.jpg',
         'descripcion' => 'Cafetín de Arse',
+                'tipo' => 'cafetin',
     ],
     [
         'nombre' => 'Estacionamiento del Rectorado',
@@ -109,6 +121,7 @@ $marcadores = [
         'longitud' => -70.24297035578725,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Estacionamiento del Rectorado',
+                'tipo' => 'estacionamiento',
     ],
     [
         'nombre' => 'Estacionamiento de Biblioteca',
@@ -116,6 +129,7 @@ $marcadores = [
         'longitud' => -70.24763937688844,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Estacionamiento de Biblioteca',
+                'tipo' => 'estacionamiento',
     ],
     [
         'nombre' => 'Mirador del Jardín Botánico',
@@ -123,6 +137,7 @@ $marcadores = [
         'longitud' => -70.25323494957942,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Mirador del Jardín Botánico',
+            'tipo' => 'recreacion',
     ],
     
     [
@@ -131,6 +146,7 @@ $marcadores = [
         'longitud' =>   -70.24488352980819,
         'imagen' => 'assets/img/cafetin_barinas1.jpg',
         'descripcion' => 'Cafetín 1',
+        'tipo' => 'cafetin',
     ],
 
     [
@@ -139,6 +155,7 @@ $marcadores = [
         'longitud' =>  -70.24542828413603,
         'imagen' => 'assets/img/cafetin2_barinas1.jpg',
         'descripcion' => 'Cafetín 2',
+                'tipo' => 'cafetin',
     ],
 
     [
@@ -146,7 +163,8 @@ $marcadores = [
         'latitud' => 8.622270699859396, 
         'longitud' =>  -70.2473044035963,
         'imagen' => 'assets/img/foto.jpg',
-        'descripcion' => 'Cafetín 2',
+        'descripcion' => 'Estacionamiento de Buses UNELLEZ',
+                'tipo' => 'estacionamiento',
     ],
 
     [
@@ -155,6 +173,7 @@ $marcadores = [
         'longitud' =>  -70.24906413848132,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Piscina Olímpica',
+            'tipo' => 'recreacion',
     ],
 
     [
@@ -163,6 +182,7 @@ $marcadores = [
         'longitud' =>  -70.24435424106241,
         'imagen' => 'assets/img/foto.jpg',
         'descripcion' => 'Estacionamiento de Barinas I',
+                'tipo' => 'estacionamiento',
     ],
 [
     'nombre' => 'laboratorio computacional D',
@@ -170,6 +190,7 @@ $marcadores = [
     'longitud' => -70.2447531,
     'imagen' => 'assets/img/Laboratorio_D.jpg',
     'descripcion' => 'laboratorio computacional D',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio computación E',
@@ -177,6 +198,7 @@ $marcadores = [
     'longitud' => -70.2444557,
     'imagen' => 'assets/img/Laboratorio_E.jpg',
     'descripcion' => 'laboratorio computación E',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio computacion A',
@@ -184,6 +206,7 @@ $marcadores = [
     'longitud' => -70.2444812,
     'imagen' => 'assets/img/Laboratorio_A.jpg',
     'descripcion' => 'laboratorio computacion A',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio computación B',
@@ -191,6 +214,7 @@ $marcadores = [
     'longitud' => -70.2446438,
     'imagen' => 'assets/img/Laboratorio_B.jpg',
     'descripcion' => 'laboratorio computación B',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio computacion C',
@@ -198,6 +222,7 @@ $marcadores = [
     'longitud' => -70.2447233,
     'imagen' => 'assets/img/Laboratorio_C.jpg',
     'descripcion' => 'laboratorio computacion C',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio de análisis de calidad de agua y alimentos',
@@ -205,6 +230,7 @@ $marcadores = [
     'longitud' => -70.2444805,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'laboratorio de análisis de calidad de agua y alimentos',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio de química orgánica',
@@ -212,6 +238,7 @@ $marcadores = [
     'longitud' => -70.2446401,
     'imagen' => 'assets/img/laboratorio_quimica_organica.jpg',
     'descripcion' => 'laboratorio de química orgánica',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio de química general A',
@@ -219,6 +246,7 @@ $marcadores = [
     'longitud' => -70.2449948,
     'imagen' => 'assets/img/laboratorio_quimica_general_a.jpg',
     'descripcion' => 'laboratorio de química general A',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio de medicina veterinaria',
@@ -226,6 +254,7 @@ $marcadores = [
     'longitud' => -70.2450890,
     'imagen' => 'assets/img/laboratorio_medicina_veterinaria.jpg',
     'descripcion' => 'laboratorio de medicina veterinaria',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio de bioquímica A',
@@ -233,6 +262,7 @@ $marcadores = [
     'longitud' => -70.2452054,
     'imagen' => 'assets/img/laboratorio_bioquimica_A.jpg',
     'descripcion' => 'laboratorio de bioquímica A',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio de bioquímica B',
@@ -240,6 +270,7 @@ $marcadores = [
     'longitud' => -70.2452704,
     'imagen' => 'assets/img/laboratorio_bioqumica_B.jpg',
     'descripcion' => 'laboratorio de bioquímica B',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'laboratorio de análisis químico instrumental',
@@ -247,6 +278,7 @@ $marcadores = [
     'longitud' => -70.2453338,
     'imagen' => 'assets/img/Laboratorio_de_analisis_quimico_instrumental_Barinas_1.jpg',
     'descripcion' => 'laboratorio de análisis químico instrumental',
+            'tipo' => 'laboratorio',
 ],
 [
     'nombre' => 'programa de cs del agro y mar A',
@@ -254,6 +286,7 @@ $marcadores = [
     'longitud' => -70.2454994,
     'imagen' => 'assets/img/programa_agro_mar_A.jpg',
     'descripcion' => 'programa de cs del agro y mar A',
+        'tipo' => 'salon',
 ],
 
 [
@@ -262,6 +295,7 @@ $marcadores = [
     'longitud' => -70.2454203,
     'imagen' => 'assets/img/p3a1_barinas1.jpg',
     'descripcion' => 'p3a1',
+    'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a2',
@@ -269,6 +303,7 @@ $marcadores = [
     'longitud' => -70.2453727,
     'imagen' => 'assets/img/p3a2_barinas1.jpg',
     'descripcion' => 'p3a2',
+    'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a3',
@@ -276,6 +311,7 @@ $marcadores = [
     'longitud' => -70.2452604,
     'imagen' => 'assets/img/p3a3_barinas1.jpg',
     'descripcion' => 'p3a3',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a4',
@@ -283,6 +319,7 @@ $marcadores = [
     'longitud' => -70.2451541,
     'imagen' => 'assets/img/p3a4_barinas1.jpg',
     'descripcion' => 'p3a4',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a5',
@@ -290,6 +327,7 @@ $marcadores = [
     'longitud' => -70.2450495,
     'imagen' => 'assets/img/p3a5_barinas1.jpg',
     'descripcion' => 'p3a5',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a6',
@@ -297,6 +335,7 @@ $marcadores = [
     'longitud' => -70.2449469,
     'imagen' => 'assets/img/p3a6_barinas1.jpg',
     'descripcion' => 'p3a6',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a7',
@@ -304,6 +343,7 @@ $marcadores = [
     'longitud' => -70.2447692,
     'imagen' => 'assets/img/p3a7_barinas1.jpg',
     'descripcion' => 'p3a7',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a8',
@@ -311,6 +351,7 @@ $marcadores = [
     'longitud' => -70.2446337,
     'imagen' => 'assets/img/p3a8_barinas1.jpg',
     'descripcion' => 'p3a8',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3a9',
@@ -318,6 +359,7 @@ $marcadores = [
     'longitud' => -70.2444695,
     'imagen' => 'assets/img/p3a9_barinas1.jpg',
     'descripcion' => 'p3a9',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'net and work',
@@ -325,6 +367,7 @@ $marcadores = [
     'longitud' => -70.2442894,
     'imagen' => 'assets/img/net&work.jpg',
     'descripcion' => 'net and work',
+                'tipo' => 'Fotocopiadora',
 ],
 [
     'nombre' => 'p3b10',
@@ -332,6 +375,7 @@ $marcadores = [
     'longitud' => -70.2442851,
     'imagen' => 'assets/img/p3b10_barinas1.jpg',
     'descripcion' => 'p3b10',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b9',
@@ -339,6 +383,7 @@ $marcadores = [
     'longitud' => -70.2443907,
     'imagen' => 'assets/img/p3b9_barinas1.jpg',
     'descripcion' => 'p3b9',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b8',
@@ -346,6 +391,7 @@ $marcadores = [
     'longitud' => -70.2445560,
     'imagen' => 'assets/img/p3b8_barinas1.jpg',
     'descripcion' => 'p3b8',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b7',
@@ -353,6 +399,7 @@ $marcadores = [
     'longitud' => -70.2447283,
     'imagen' => 'assets/img/p3b7_barinas1.jpg',
     'descripcion' => 'p3b7',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b6',
@@ -360,6 +407,7 @@ $marcadores = [
     'longitud' => -70.2449596,
     'imagen' => 'assets/img/p3b6_barinas1.jpg',
     'descripcion' => 'p3b6',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b5',
@@ -367,6 +415,7 @@ $marcadores = [
     'longitud' => -70.2450575,
     'imagen' => 'assets/img/p3b5_barinas1.jpg',
     'descripcion' => 'p3b5',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b4',
@@ -374,6 +423,7 @@ $marcadores = [
     'longitud' => -70.2451782,
     'imagen' => 'assets/img/p3b4_barinas1.jpg',
     'descripcion' => 'p3b4',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b3',
@@ -381,6 +431,7 @@ $marcadores = [
     'longitud' => -70.2452828,
     'imagen' => 'assets/img/p3b3_barinas1.jpg',
     'descripcion' => 'p3b3',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b2',
@@ -388,6 +439,7 @@ $marcadores = [
     'longitud' => -70.2453777,
     'imagen' => 'assets/img/p3b2_barinas1.jpg',
     'descripcion' => 'p3b2',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p3b1',
@@ -395,6 +447,7 @@ $marcadores = [
     'longitud' => -70.2454361,
     'imagen' => 'assets/img/p3b1_barinas1.jpg',
     'descripcion' => 'p3b1',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'programa cs del agro y mar B',
@@ -402,6 +455,7 @@ $marcadores = [
     'longitud' => -70.2455128,
     'imagen' => 'assets/img/programa_agro_mar_b.jpg',
     'descripcion' => 'programa cs del agro y mar B',
+        'tipo' => 'salon',
 ],
 
 [
@@ -410,6 +464,7 @@ $marcadores = [
     'longitud' => -70.2452936,
     'imagen' => 'assets/img/p4a3_barinas1.jpg',
     'descripcion' => 'p4a3',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p4a2',
@@ -417,6 +472,7 @@ $marcadores = [
     'longitud' => -70.2451266,
     'imagen' => 'assets/img/p4a2_barinas1.jpg',
     'descripcion' => 'p4a2',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p4a4',
@@ -424,6 +480,7 @@ $marcadores = [
     'longitud' => -70.2447779,
     'imagen' => 'assets/img/p4a4_barinas1.jpg',
     'descripcion' => 'p4a4',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p4a5',
@@ -431,6 +488,7 @@ $marcadores = [
     'longitud' => -70.2446277,
     'imagen' => 'assets/img/p4a5_barinas1.jpg',
     'descripcion' => 'p4a5',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p4a6',
@@ -438,6 +496,7 @@ $marcadores = [
     'longitud' => -70.2444641,
     'imagen' => 'assets/img/p4a6_barinas1.jpg',
     'descripcion' => 'p4a6',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'copy king',
@@ -445,6 +504,7 @@ $marcadores = [
     'longitud' => -70.2442056,
     'imagen' => 'assets/img/copyKing_barinas1.jpg',
     'descripcion' => 'copy king',
+            'tipo' => 'Fotocopiadora',
 ],
 [
     'nombre' => 'p4b6',
@@ -452,6 +512,7 @@ $marcadores = [
     'longitud' => -70.2443233,
     'imagen' => 'assets/img/p4b6_barinas1.jpg',
     'descripcion' => 'p4b6',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p4b5',
@@ -459,6 +520,7 @@ $marcadores = [
     'longitud' => -70.2445291,
     'imagen' => 'assets/img/p4b5_barinas1.jpg',
     'descripcion' => 'p4b5',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p4b4',
@@ -466,6 +528,7 @@ $marcadores = [
     'longitud' => -70.2447172,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'p4b4',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'aula modelo p4a1',
@@ -473,6 +536,7 @@ $marcadores = [
     'longitud' => -70.2450210,
     'imagen' => 'assets/img/p4b1_aulamodelo.jpg',
     'descripcion' => 'aula modelo p4a1',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'aula no identificado y no utilizado',
@@ -480,6 +544,7 @@ $marcadores = [
     'longitud' => -70.2452302,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'aula no identificado y no utilizado',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p4b3',
@@ -487,6 +552,7 @@ $marcadores = [
     'longitud' => -70.2454025,
     'imagen' => 'assets/img/p4b3_barinas1.jpg',
     'descripcion' => 'p4b3',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5a3',
@@ -494,6 +560,7 @@ $marcadores = [
     'longitud' => -70.2452456,
     'imagen' => 'assets/img/p5a3_barinas1.jpg',
     'descripcion' => 'p5a3',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5a2',
@@ -501,6 +568,7 @@ $marcadores = [
     'longitud' => -70.2451501,
     'imagen' => 'assets/img/p5a2_barinas1.jpg',
     'descripcion' => 'p5a2',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5a1',
@@ -508,6 +576,7 @@ $marcadores = [
     'longitud' => -70.2450076,
     'imagen' => 'assets/img/p5a1_barinas1.jpg',
     'descripcion' => 'p5a1',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'fotocopia el pelon',
@@ -515,6 +584,7 @@ $marcadores = [
     'longitud' => -70.2448745,
     'imagen' => 'assets/img/Fotocopiadora_pelon.jpg',
     'descripcion' => 'fotocopia el pelon',
+                'tipo' => 'Fotocopiadora',
 ],
 [
     'nombre' => 'cafetín los abuelos',
@@ -522,6 +592,7 @@ $marcadores = [
     'longitud' => -70.2449053,
     'imagen' => 'assets/img/cafetin_los_abuelos.jpg',
     'descripcion' => 'cafetín los abuelos',
+            'tipo' => 'cafetin',
 ],
 [
     'nombre' => 'teatro',
@@ -529,6 +600,8 @@ $marcadores = [
     'longitud' => -70.2447300,
     'imagen' => 'assets/img/Teatro.jpg',
     'descripcion' => 'teatro',
+    'tipo' => 'recreacion',
+    
 ],
 [
     'nombre' => 'p5b1',
@@ -536,6 +609,7 @@ $marcadores = [
     'longitud' => -70.2448859,
     'imagen' => 'assets/img/p5b1_barinas1.jpg',
     'descripcion' => 'p5b1',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5b2',
@@ -543,6 +617,7 @@ $marcadores = [
     'longitud' => -70.2449301,
     'imagen' => 'assets/img/p5b2_barinas1.jpg',
     'descripcion' => 'p5b2',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5b3',
@@ -550,6 +625,7 @@ $marcadores = [
     'longitud' => -70.2449968,
     'imagen' => 'assets/img/p5b3_barinas1.jpg',
     'descripcion' => 'p5b3',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'programa cs de la educación',
@@ -557,6 +633,7 @@ $marcadores = [
     'longitud' => -70.2450917,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'programa cs de la educación',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5b5',
@@ -564,6 +641,7 @@ $marcadores = [
     'longitud' => -70.2451541,
     'imagen' => 'assets/img/p5b5_barinas1.jpg',
     'descripcion' => 'p5b5',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5b6',
@@ -571,6 +649,7 @@ $marcadores = [
     'longitud' => -70.2451890,
     'imagen' => 'assets/img/p5b6.jpg',
     'descripcion' => 'p5b6',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'p5b7',
@@ -578,6 +657,7 @@ $marcadores = [
     'longitud' => -70.2452862,
     'imagen' => 'assets/img/p5b7.jpg',
     'descripcion' => 'p5b7',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'otro salón 1',
@@ -585,6 +665,7 @@ $marcadores = [
     'longitud' => -70.2447115,
     'imagen' => 'assets/img/otro_salon_1.jpg',
     'descripcion' => 'otro salón 1',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'otro salón 2',
@@ -592,6 +673,7 @@ $marcadores = [
     'longitud' => -70.2444510,
     'imagen' => 'assets/img/otro_salon_2.jpg',
     'descripcion' => 'otro salón 2',
+        'tipo' => 'salon',
 ],
 [
     'nombre' => 'otro salón 3',
@@ -599,6 +681,7 @@ $marcadores = [
     'longitud' => -70.2442861,
     'imagen' => 'assets/img/otro_salon_3.jpg',
     'descripcion' => 'otro salón 3',
+        'tipo' => 'salon',
 ],
 
 [
@@ -607,6 +690,7 @@ $marcadores = [
     'longitud' => -70.2448426,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'baños 1',
+    'tipo' => 'bano',
 ],
 [
     'nombre' => 'baños 2',
@@ -614,6 +698,7 @@ $marcadores = [
     'longitud' => -70.2447853,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'baños 2',
+    'tipo' => 'bano',
 ],
 [
     'nombre' => 'baños 3',
@@ -621,6 +706,7 @@ $marcadores = [
     'longitud' => -70.2448818,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'baños 3',
+    'tipo' => 'bano',
 ],
 [
     'nombre' => 'baños 4',
@@ -628,6 +714,7 @@ $marcadores = [
     'longitud' => -70.2448704,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'baños 4',
+    'tipo' => 'bano',
 ],
 [
     'nombre' => 'baños 5',
@@ -635,6 +722,7 @@ $marcadores = [
     'longitud' => -70.2448282,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'baños 5',
+    'tipo' => 'bano',
 ],
 [
     'nombre' => 'baños 6',
@@ -642,6 +730,7 @@ $marcadores = [
     'longitud' => -70.2445442,
     'imagen' => 'assets/img/foto.jpg',
     'descripcion' => 'baños 6',
+    'tipo' => 'bano',
 ],
 [
     'nombre' => 'oficina de relaciones públicas y prensa',
@@ -649,6 +738,7 @@ $marcadores = [
     'longitud' => -70.2427619,
     'imagen' => 'assets/img/oficina_relaciones_publicas_prensa.jpg',
     'descripcion' => 'oficina de relaciones públicas y prensa',
+        'tipo' => 'oficina',
 ],
 [
     'nombre' => 'Unellez 91.3 FM la Señal Universitaria',
@@ -656,6 +746,7 @@ $marcadores = [
     'longitud' => -70.2426231,
     'imagen' => 'assets/img/unellez_radio.jpg',
     'descripcion' => 'Unellez 91.3 FM la Señal Universitaria',
+            'tipo' => 'oficina',
 ],
 [
     'nombre' => 'cubículo 13',
@@ -663,6 +754,7 @@ $marcadores = [
     'longitud' => -70.2437204,
     'imagen' => 'assets/img/cubiculo_13.jpg',
     'descripcion' => 'cubículo 13',
+    'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 12',
@@ -670,6 +762,7 @@ $marcadores = [
     'longitud' => -70.2437550,
     'imagen' => 'assets/img/cubiculo_12.jpg',
     'descripcion' => 'cubículo 12',
+    'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 11',
@@ -677,6 +770,7 @@ $marcadores = [
     'longitud' => -70.2437875,
     'imagen' => 'assets/img/cubiculo_11.jpg',
     'descripcion' => 'cubículo 11',
+    'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 10',
@@ -684,6 +778,7 @@ $marcadores = [
     'longitud' => -70.243822,
     'imagen' => 'assets/img/cubiculo_10.jpg',
     'descripcion' => 'cubículo 10',
+    'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 9',
@@ -691,6 +786,7 @@ $marcadores = [
     'longitud' => -70.2438230,
     'imagen' => 'assets/img/cubiculo_9.jpg',
     'descripcion' => 'cubículo 9',
+    'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 8',
@@ -698,6 +794,7 @@ $marcadores = [
     'longitud' => -70.2438633,
     'imagen' => 'assets/img/cubiculo_8.jpg',
     'descripcion' => 'cubículo 8',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 7',
@@ -705,6 +802,7 @@ $marcadores = [
     'longitud' => -70.2438968,
     'imagen' => 'assets/img/cubiculo_7.jpg',
     'descripcion' => 'cubículo 7',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 6',
@@ -712,6 +810,7 @@ $marcadores = [
     'longitud' => -70.2439421,
     'imagen' => 'assets/img/cubiculo_6.jpg',
     'descripcion' => 'cubículo 6',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 4',
@@ -719,6 +818,7 @@ $marcadores = [
     'longitud' => -70.2440209,
     'imagen' => 'assets/img/cubiculo_4.jpg',
     'descripcion' => 'cubículo 4',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 3',
@@ -726,6 +826,7 @@ $marcadores = [
     'longitud' => -70.2440554,
     'imagen' => 'assets/img/cubiculo_3.jpg',
     'descripcion' => 'cubículo 3',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 2',
@@ -733,6 +834,7 @@ $marcadores = [
     'longitud' => -70.2440903,
     'imagen' => 'assets/img/cubiculo_2.jpg',
     'descripcion' => 'cubículo 2',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 1',
@@ -740,6 +842,7 @@ $marcadores = [
     'longitud' => -70.2441318,
     'imagen' => 'assets/img/cubiculo_1.jpg',
     'descripcion' => 'cubículo 1',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 5',
@@ -747,6 +850,7 @@ $marcadores = [
     'longitud' => -70.2439786,
     'imagen' => 'assets/img/cubiculo_5.jpg',
     'descripcion' => 'cubículo 5',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 14',
@@ -754,6 +858,7 @@ $marcadores = [
     'longitud' => -70.2435904,
     'imagen' => 'assets/img/cubiculo_14.jpg',
     'descripcion' => 'cubículo 14',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 15',
@@ -761,6 +866,7 @@ $marcadores = [
     'longitud' => -70.2436075,
     'imagen' => 'assets/img/cubiculo_15.jpg',
     'descripcion' => 'cubículo 15',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 16',
@@ -768,6 +874,7 @@ $marcadores = [
     'longitud' => -70.2436269,
     'imagen' => 'assets/img/cubiculo_16.jpg',
     'descripcion' => 'cubículo 16',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 17',
@@ -775,6 +882,7 @@ $marcadores = [
     'longitud' => -70.243643,
     'imagen' => 'assets/img/cubiculo_17.jpg',
     'descripcion' => 'cubículo 17',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 18',
@@ -782,6 +890,7 @@ $marcadores = [
     'longitud' => -70.2436514,
     'imagen' => 'assets/img/cubiculo_18.jpg',
     'descripcion' => 'cubículo 18',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 19',
@@ -789,6 +898,7 @@ $marcadores = [
     'longitud' => -70.2436725,
     'imagen' => 'assets/img/cubiculo_19.jpg',
     'descripcion' => 'cubículo 19',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 20',
@@ -796,6 +906,7 @@ $marcadores = [
     'longitud' => -70.2436906,
     'imagen' => 'assets/img/cubiculo_20.jpg',
     'descripcion' => 'cubículo 20',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 21',
@@ -803,6 +914,7 @@ $marcadores = [
     'longitud' => -70.2437255,
     'imagen' => 'assets/img/cubiculo_21.jpg',
     'descripcion' => 'cubículo 21',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 22',
@@ -810,6 +922,7 @@ $marcadores = [
     'longitud' => -70.243850,
     'imagen' => 'assets/img/cubiculo_22.jpg',
     'descripcion' => 'cubículo 22',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 23',
@@ -817,6 +930,7 @@ $marcadores = [
     'longitud' => -70.2439337,
     'imagen' => 'assets/img/cubiculo_23.jpg',
     'descripcion' => 'cubículo 23',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 24',
@@ -824,6 +938,7 @@ $marcadores = [
     'longitud' => -70.2440031,
     'imagen' => 'assets/img/cubiculo_24.jpg',
     'descripcion' => 'cubículo 24',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 25',
@@ -831,6 +946,7 @@ $marcadores = [
     'longitud' => -70.244039,
     'imagen' => 'assets/img/cubiculo_25.jpg',
     'descripcion' => 'cubículo 25',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 26',
@@ -838,6 +954,7 @@ $marcadores = [
     'longitud' => -70.244076,
     'imagen' => 'assets/img/cubiculo_26.jpg',
     'descripcion' => 'cubículo 26',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 27',
@@ -845,6 +962,7 @@ $marcadores = [
     'longitud' => -70.2441077,
     'imagen' => 'assets/img/cubiculo_27.jpg',
     'descripcion' => 'cubículo 27',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 28',
@@ -852,6 +970,7 @@ $marcadores = [
     'longitud' => -70.2441352,
     'imagen' => 'assets/img/cubiculo_28.jpg',
     'descripcion' => 'cubículo 28',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 29',
@@ -859,6 +978,7 @@ $marcadores = [
     'longitud' => -70.2441550,
     'imagen' => 'assets/img/cubiculo_29.jpg',
     'descripcion' => 'cubículo 29',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 30',
@@ -866,6 +986,7 @@ $marcadores = [
     'longitud' => -70.2441650,
     'imagen' => 'assets/img/cubiculo_30.jpg',
     'descripcion' => 'cubículo 30',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 31',
@@ -873,6 +994,7 @@ $marcadores = [
     'longitud' => -70.244184,
     'imagen' => 'assets/img/cubiculo_31.jpg',
     'descripcion' => 'cubículo 31',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 32',
@@ -880,6 +1002,7 @@ $marcadores = [
     'longitud' => -70.244207,
     'imagen' => 'assets/img/cubiculo_32.jpg',
     'descripcion' => 'cubículo 32',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 33',
@@ -887,6 +1010,7 @@ $marcadores = [
     'longitud' => -70.2442401,
     'imagen' => 'assets/img/cubiculo_33.jpg',
     'descripcion' => 'cubículo 33',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'cubículo 34',
@@ -894,6 +1018,7 @@ $marcadores = [
     'longitud' => -70.244273,
     'imagen' => 'assets/img/cubiculo_34.jpg',
     'descripcion' => 'cubículo 34',
+        'tipo' => 'cubiculo',
 ],
 [
     'nombre' => 'compras central',
@@ -901,6 +1026,7 @@ $marcadores = [
     'longitud' => -70.2431263,
     'imagen' => 'assets/img/compras_central.jpg',
     'descripcion' => 'compras central',
+        'tipo' => 'oficina',
 ],
 [
     'nombre' => 'dirección de servicio administrativo y financiero',
@@ -908,6 +1034,7 @@ $marcadores = [
     'longitud' => -70.2430506,
     'imagen' => 'assets/img/dirección_servicio_administrativo_financiero.jpg',
     'descripcion' => 'dirección de servicio administrativo y financiero',
+        'tipo' => 'oficina',
 ],
 [
     'nombre' => 'mantenimiento/servicios generales',
@@ -915,6 +1042,7 @@ $marcadores = [
     'longitud' => -70.2433748,
     'imagen' => 'assets/img/Mantenimiento_Servicios_general.jpg',
     'descripcion' => 'mantenimiento/servicios generales',
+        'tipo' => 'oficina',
 ],
 [
     'nombre' => 'cabaña 7',
@@ -922,6 +1050,7 @@ $marcadores = [
     'longitud' => -70.2417453,
     'imagen' => 'assets/img/cabaña_7.jpg',
     'descripcion' => 'cabaña 7',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 6',
@@ -929,6 +1058,7 @@ $marcadores = [
     'longitud' => -70.2419546,
     'imagen' => 'assets/img/cabaña_6.jpg',
     'descripcion' => 'cabaña 6',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 8',
@@ -936,6 +1066,7 @@ $marcadores = [
     'longitud' => -70.2414889,
     'imagen' => 'assets/img/cabaña_8.jpg',
     'descripcion' => 'cabaña 8',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 11',
@@ -943,6 +1074,7 @@ $marcadores = [
     'longitud' => -70.2412233,
     'imagen' => 'assets/img/cabaña_11.jpg',
     'descripcion' => 'cabaña 11',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 10',
@@ -950,6 +1082,7 @@ $marcadores = [
     'longitud' => -70.2408341,
     'imagen' => 'assets/img/cabaña_10.jpg',
     'descripcion' => 'cabaña 10',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 12',
@@ -957,6 +1090,7 @@ $marcadores = [
     'longitud' => -70.2415452,
     'imagen' => 'assets/img/cabaña_12.jpg',
     'descripcion' => 'cabaña 12',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 4',
@@ -964,6 +1098,7 @@ $marcadores = [
     'longitud' => -70.2420679,
     'imagen' => 'assets/img/cabaña_4.jpg',
     'descripcion' => 'cabaña 4',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 5',
@@ -971,6 +1106,7 @@ $marcadores = [
     'longitud' => -70.2418801,
     'imagen' => 'assets/img/cabaña_5.jpg',
     'descripcion' => 'cabaña 5',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña no utilizada posiblemente es la 2',
@@ -978,6 +1114,7 @@ $marcadores = [
     'longitud' => -70.2422439,
     'imagen' => 'assets/img/cabaña_2_no_utilizada.jpg',
     'descripcion' => 'cabaña no utilizada posiblemente es la 2',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 1',
@@ -985,6 +1122,7 @@ $marcadores = [
     'longitud' => -70.2424736,
     'imagen' => 'assets/img/cabaña_1.jpg',
     'descripcion' => 'cabaña 1',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 17',
@@ -992,6 +1130,7 @@ $marcadores = [
     'longitud' => -70.2418841,
     'imagen' => 'assets/img/cabaña_17.jpg',
     'descripcion' => 'cabaña 17',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 14',
@@ -999,6 +1138,7 @@ $marcadores = [
     'longitud' => -70.2411479,
     'imagen' => 'assets/img/cabaña_14.jpg',
     'descripcion' => 'cabaña 14',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'cabaña 13',
@@ -1006,6 +1146,7 @@ $marcadores = [
     'longitud' => -70.2410181,
     'imagen' => 'assets/img/cabaña_13.jpg',
     'descripcion' => 'cabaña 13',
+    'tipo' => 'cabaña',
 ],
 [
     'nombre' => 'secretaria general',
@@ -1013,6 +1154,7 @@ $marcadores = [
     'longitud' => -70.2425212,
     'imagen' => 'assets/img/Secretaria_general.jpg',
     'descripcion' => 'secretaria general',
+        'tipo' => 'oficina',
 ],
 [
     'nombre' => 'vice rectorado de servicios',
@@ -1020,6 +1162,7 @@ $marcadores = [
     'longitud' => -70.2425165,
     'imagen' => 'assets/img/vice_rectorado_servicios.jpg',
     'descripcion' => 'vice rectorado de servicios',
+        'tipo' => 'oficina',
 ],
 
 ];
