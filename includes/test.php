@@ -122,13 +122,7 @@ include 'coords.php';
     // Inicializa el mapa y lo centra en la primera ubicación
 const mapa = L.map('map', {
   zoomControl: false,
-  maxZoom: 22,
-  minZoom: 17,
-  maxBounds: [
-    [8.610, -70.262], // suroeste
-    [8.660, -70.229]  // noreste aún más al norte
-  ],
-  maxBoundsViscosity: 1.0
+
 }).setView([<?= $marcadores[0]['latitud'] ?>, <?= $marcadores[0]['longitud'] ?>], 19);
 
 
@@ -461,15 +455,9 @@ function mostrarMenuContextual(e) {
   lngTmp = e.latlng.lng;
 
   // Verifica si está dentro de los límites
-  const limites = L.latLngBounds(
-    [8.610, -70.262],
-    [8.660, -70.229]
-  );
 
-  if (!limites.contains([latTmp, lngTmp])) {
-    mostrarAlertaRuta();
-    return; // NO mostrar panel ni GIF
-  }
+
+ 
 
   // Muestra el panel flotante
   const panel = document.getElementById("panelMarcador");
@@ -495,15 +483,9 @@ function mostrarMenuContextual(e) {
 
     // Función para seleccionar el punto A
  function seleccionarPuntoA(lat, lng) {
-  const limites = L.latLngBounds(
-    [8.610, -70.262], // suroeste
-    [8.660, -70.229]  // noreste
-  );
 
-  if (!limites.contains([lat, lng])) {
-    mostrarAlertaRuta();
-    return; // ← evita seguir
-  }
+
+
 
   document.getElementById("panelMarcador").style.display = "none";
   if (marcadorTemporalGIF) {
@@ -522,16 +504,6 @@ function mostrarMenuContextual(e) {
 }
 
 function seleccionarPuntoB(lat, lng) {
-  const limites = L.latLngBounds(
-    [8.610, -70.262],
-    [8.660, -70.229]
-  );
-
-  if (!limites.contains([lat, lng])) {
-    mostrarAlertaRuta();
-    return;
-  }
-
   document.getElementById("panelMarcador").style.display = "none";
   if (marcadorTemporalGIF) {
     mapa.removeLayer(marcadorTemporalGIF);
@@ -548,6 +520,7 @@ function seleccionarPuntoB(lat, lng) {
   }
 }
 
+
     // Función para calcular la ruta usando OpenRouteService
 function calcularRuta() {
   limpiarRuta(); // Elimina la ruta existente
@@ -563,15 +536,9 @@ function calcularRuta() {
       perfil = 'driving-car';
     }
 
-    const limites = L.latLngBounds(
-      [8.610, -70.262], // suroeste
-      [8.660, -70.229]  // noreste
-    );
 
-    if (!limites.contains(puntoA) || !limites.contains(puntoB)) {
-  mostrarAlertaRuta();
-  return;
-    }
+
+
 
     if (perfil) {
       obtenerRutaOpenRouteService(puntoA, puntoB, perfil);
@@ -599,53 +566,28 @@ function obtenerRutaOpenRouteService(puntoA, puntoB, perfil) {
             return response.json();
         })
         .then(data => {
- if (!data.features) {
-    throw new Error("Respuesta inválida de OpenRouteService");
-}
+            if (!data.features) {
+                throw new Error("Respuesta inválida de OpenRouteService");
+            }
 
-// 1. Convertir coordenadas [lng, lat] → [lat, lng]
-const crudos = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+            const coordenadas = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+            rutaORS = L.polyline(coordenadas, { color: 'blue' }).addTo(mapa);
+            mapa.fitBounds(rutaORS.getBounds());
 
-// 2. Interpolación para suavizar la ruta
-function subdividirRuta(coords, subdivisiones = 4) {
-  const resultado = [];
-  for (let i = 0; i < coords.length - 1; i++) {
-    const [lat1, lng1] = coords[i];
-    const [lat2, lng2] = coords[i + 1];
+            document.getElementById("btnLimpiar").style.display = "block";
+            localStorage.setItem("ruta_AR", JSON.stringify(coordenadas));
 
-    for (let j = 0; j < subdivisiones; j++) {
-      const t = j / subdivisiones;
-      const lat = lat1 + (lat2 - lat1) * t;
-      const lng = lng1 + (lng2 - lng1) * t;
-      resultado.push([lat, lng]);
-    }
-  }
-  resultado.push(coords[coords.length - 1]);
-  return resultado;
-}
+            const panel = document.getElementById("infoPanel");
+            if (panel.classList.contains("show")) {
+                panel.classList.remove("show");
+                document.getElementById("btnIr").disabled = true;
+            }
 
-// 3. Aplica interpolación
-const coordenadas = subdividirRuta(crudos, 5); // puedes ajustar el 5 para más/menos puntos
-
-// 4. Dibuja y guarda
-rutaORS = L.polyline(coordenadas, { color: 'blue' }).addTo(mapa);
-mapa.fitBounds(rutaORS.getBounds());
-
-document.getElementById("btnLimpiar").style.display = "block";
-localStorage.setItem("ruta_AR", JSON.stringify(coordenadas));
-
-const panel = document.getElementById("infoPanel");
-if (panel.classList.contains("show")) {
-    panel.classList.remove("show");
-    document.getElementById("btnIr").disabled = true;
-}
-
-const btnAR = document.getElementById("btnAR");
-btnAR.style.display = "flex";
-setTimeout(() => {
-    btnAR.style.opacity = "1";
-}, 10);
-
+            const btnAR = document.getElementById("btnAR");
+            btnAR.style.display = "flex";
+            setTimeout(() => {
+                btnAR.style.opacity = "1";
+            }, 10);
         })
         .catch(error => {
             console.warn("⚠️ No se pudo obtener la ruta:", error.message);
@@ -797,19 +739,6 @@ function irA(destLat, destLng) {
             const userLat = position.coords.latitude;
             const userLng = position.coords.longitude;
 
-            const limites = L.latLngBounds(
-                [8.610, -70.262],
-                [8.660, -70.229]
-            );
-
-            // Si el punto A (ubicación) está fuera del área, mostrar alerta y no continuar
-            if (!limites.contains([userLat, userLng])) {
-                mostrarAlertaRuta();
-                btn.textContent = "Quiero ir ahí";
-                btn.disabled = false;
-                return;
-            }
-
             seleccionarPuntoA(userLat, userLng); // define el origen
             seleccionarPuntoB(destLat, destLng); // define el destino
 
@@ -824,6 +753,7 @@ function irA(destLat, destLng) {
         }
     );
 }
+
 
 
 document.getElementById("gearFilterControl").addEventListener("click", () => {
