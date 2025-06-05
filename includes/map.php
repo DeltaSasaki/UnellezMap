@@ -70,6 +70,7 @@ include 'coords.php';
   <label><input type="checkbox" value="bano" checked> Baños</label><br>
   <label><input type="checkbox" value="recreacion" checked> Zonas Recreativas</label><br>
   <label><input type="checkbox" value="fotocopiadora" checked> Fotocopiadoras</label><br>
+    <label><input type="checkbox" value="estacionamiento" checked> Estacionamiento</label><br>
   
   <hr style="margin: 10px 0;">
   <button id="btnReiniciarFiltros" style="width: 100%; padding: 5px;">Reiniciar filtros</button>
@@ -434,8 +435,11 @@ function limpiarRuta() {
     }
     document.getElementById("btnLimpiar").style.display = "none";
     document.getElementById("btnAR").style.display = "none";
+
+    // 🔥 Añadir esto:
     mostrarTodosLosMarcadores();
 }
+
 
 function limpiarMapa() {
     limpiarRuta(); // Ya limpia el botón
