@@ -30,14 +30,10 @@ include 'coords.php';
 </div>
 
 <div id="mapLayersMenu" class="map-layers-menu">
-  <label><input type="radio" name="mapa" value="osm"checked> OpenStreetMap</label>
-  <label><input type="radio" name="mapa" value="topo"> OpenTopoMap</label>
-  <label><input type="radio" name="mapa" value="satelite"> Satelital</label>
-  <label><input type="radio" name="mapa" value="oscuro"> Modo Oscuro</label>
-  <label><input type="radio" name="mapa" value="maptiler"> MapTiler HD</label>
-<label><input type="radio" name="mapa" value="maptilerStreets"> MapTiler Streets</label>
-<label><input type="radio" name="mapa" value="maptilerSatelite"> Satelital (MapTiler)</label>
-<label><input type="radio" name="mapa" value="maptilerOutdoor" > MapTiler Outdoor</label>
+<label><input type="radio" name="mapa" value="maptiler" checked> Mapa Básico</label>
+<label><input type="radio" name="mapa" value="maptilerStreets"> Calles</label>
+<label><input type="radio" name="mapa" value="maptilerSatelite"> Vista Satelital</label>
+<label><input type="radio" name="mapa" value="maptilerOutdoor"> Exterior</label>
 
     
 
@@ -142,18 +138,7 @@ document.getElementById("btnAR").style.display = "none";
 
     // Define las capas de mapas
 const capas = {
-    "osm": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }),
-    "topo": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data: &copy; OpenStreetMap contributors'
-    }),
-    "satelite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri'
-    }),
-    "oscuro": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; CartoDB'
-    }),
+
     
     "maptiler": L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=YQx7NLZ5DojZGUKvI0ZN', {
     tileSize: 512,
@@ -189,7 +174,7 @@ const capas = {
 
 };
 
-let capaActual = capas["osm"];
+let capaActual = capas["maptiler"];
 capaActual.addTo(mapa);
 
  

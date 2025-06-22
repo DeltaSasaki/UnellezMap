@@ -6,5 +6,6 @@
     <title>Mapa de la UNELLEZ - Barinas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="assets/css/header.css">
+    	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.ico">
 </head>
 <body>

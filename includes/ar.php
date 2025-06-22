@@ -108,7 +108,7 @@
 
     #cancelarRuta {
       position: fixed;
-      top: 80px;
+      top: 100px;
       left: 16px;
       z-index: 1001;
       background-color: rgba(0, 0, 0, 0.7);
