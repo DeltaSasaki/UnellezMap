@@ -170,13 +170,13 @@
       to { opacity: 1; transform: translateX(-50%) translateY(0);}
     }
 
-    #cancelarRuta {
+     #cancelarRuta {
       position: fixed;
       top: 100px;
       left: 16px;
       z-index: 1001;
-      background: linear-gradient(90deg, #232a34 60%, #2e3540 100%);
-      color: #fff;
+      background: linear-gradient(90deg, #232a34 60%, #2e3540 100%); /* Mantener el degradado oscuro original para el estado normal */
+      color: #fff; /* Color del texto blanco */
       border: none;
       border-radius: 10px;
       padding: 12px 22px;
@@ -184,23 +184,25 @@
       cursor: pointer;
       font-weight: 600;
       box-shadow: 0 2px 12px 0 rgba(0,0,0,0.22);
-      border: 1.5px solid #ff4d4d;
+      border: 1.5px solid #ff4d4d; /* Borde rojo */
       transition: background 0.2s, color 0.2s, border 0.2s;
       display: flex;
       align-items: center;
-      justify-content: center; /* <-- Añade esta línea para centrar */
+      justify-content: center;
       gap: 8px;
     }
     #cancelarRuta::before {
       content: "✖";
-      font-size: 24px; /* Puedes aumentar el tamaño si lo deseas */
-      color: #ff4d4d;
-      margin: 0; /* Elimina el margin-right para centrar perfectamente */
+      font-size: 18px;
+      color: #ff4d4d; /* Color de la X roja */
     }
     #cancelarRuta:hover {
-      background: linear-gradient(90deg, #ff4d4d 60%, #ffcc00 100%);
-      color: #232a34;
-      border: 1.5px solid #fff;
+      background: #ff4d4d; /* Fondo sólido rojo al pasar el ratón */
+      color: #232a34; /* Color del texto oscuro para contrastar con el fondo rojo */
+      border: 1.5px solid #fff; /* Borde blanco al pasar el ratón */
+    }
+    #cancelarRuta:hover::before {
+      color: #fff; /* Color de la X blanco para que se distinga sobre el fondo rojo */
     }
 
     #btnAyuda {
@@ -209,8 +211,8 @@
       top: 160px;
       left: 16px;
       z-index: 1002;
-      background: linear-gradient(135deg, #232a34 60%, #ffcc00 100%);
-      color: #232a34;
+background: #232a34; /* Fondo sólido oscuro */
+      color: white;
       border: none;
       border-radius: 50%;
       width: 54px;
@@ -218,7 +220,7 @@
       font-size: 32px;
       cursor: pointer;
       box-shadow: 0 2px 12px 0 rgba(0,0,0,0.22);
-      border: 2px solid #ffcc00;
+      border: 2px solid #ffcc00; /* <-- CAMBIO AQUÍ: borde amarillo */
       font-weight: bold;
       transition: background 0.2s, color 0.2s, border 0.2s;
       display: flex;
@@ -226,11 +228,7 @@
       justify-content: center;
       animation: fadeInAyuda 1.2s;
     }
-    #btnAyuda:hover {
-      background: linear-gradient(135deg, #ffcc00 60%, #232a34 100%);
-      color: #ff4d4d;
-      border: 2px solid #ff4d4d;
-    }
+
     @keyframes fadeInAyuda {
       from { opacity: 0; transform: scale(0.7);}
       to { opacity: 1; transform: scale(1);}
@@ -370,8 +368,8 @@
   <!-- Precisión GPS -->
   <div id="gpsPrecision" style="display:none;">Precisión: -- m</div>
 
-!-- Botón cancelar -->
-<button id="cancelarRuta" onclick="window.location.href='../index.php'" style="display:none;" aria-label="Cancelar ruta"></button>
+  <!-- Botón cancelar -->
+  <button id="cancelarRuta" onclick="window.location.href='../index.php'" style="display:none;"></button>
 
   <!-- Carga -->
   <div id="loader">
@@ -392,7 +390,7 @@
   ?>
 
   <!-- Botón ayuda "?" -->
-  <button id="btnAyuda" title="¿Dónde estoy?" style="display:none;position:fixed;top:160px;left:16px;z-index:1002;background:#222;color:#ffcc00;border:none;border-radius:50%;width:44px;height:44px;font-size:28px;cursor:pointer;">?</button>
+  <button id="btnAyuda" title="¿Dónde estoy?" >?</button>
 
   <script>
     window.speechSynthesis.speak(new SpeechSynthesisUtterance("")); // precarga voz
