@@ -614,7 +614,7 @@ function subdividirRuta(coords, subdivisiones = 4) {
 }
 
 // 3. Aplica interpolación
-const coordenadas = subdividirRuta(crudos, 5); // puedes ajustar el 5 para más/menos puntos
+const coordenadas = crudos; // Sin subdividir, solo los puntos originales
 
 // 4. Dibuja y guarda
 rutaORS = L.polyline(coordenadas, { color: 'blue' }).addTo(mapa);
