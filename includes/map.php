@@ -275,8 +275,7 @@ const layerMarcadores = L.layerGroup();
 const capasPorTipo = {};
 const referenciaMarcadores = {};
 marcadores.forEach(marcador => {
-const marker = L.marker([marcador.latitud, marcador.longitud], { icon: obtenerIconoPorTipo(marcador.tipo) })
- // ← Usa iconCoords aquí
+    const marker = L.marker([marcador.latitud, marcador.longitud], { icon: obtenerIconoPorTipo(marcador.tipo) })
         .on('click', () => {
             const btnIr = document.getElementById("btnIr");
             // Cierra el menú de capas si está abierto
@@ -285,15 +284,31 @@ const marker = L.marker([marcador.latitud, marcador.longitud], { icon: obtenerIc
                 menu.style.display = "none";
             }
 
-            
-if (marcadorTemporalGIF) {
-    mapa.removeLayer(marcadorTemporalGIF);
-    marcadorTemporalGIF = null;
-}
+            if (marcadorTemporalGIF) {
+                mapa.removeLayer(marcadorTemporalGIF);
+                marcadorTemporalGIF = null;
+            }
+
             // Muestra el panel con info
             document.getElementById("infoTitulo").textContent = marcador.nombre;
-            document.getElementById("infoImagen").src = marcador.imagen;
-            document.getElementById("infoDescripcion").textContent = marcador.descripcion;
+
+            const infoImagen = document.getElementById("infoImagen");
+            if (marcador.tipo === 'bano' || marcador.tipo === 'estacionamiento') {
+                infoImagen.style.display = 'none'; // Oculta la imagen
+                infoImagen.src = ''; // Limpia la fuente para asegurar
+                infoImagen.alt = ''; // Limpia el alt
+            } else {
+                infoImagen.style.display = 'block'; // Asegura que la imagen sea visible para otros tipos
+                infoImagen.src = marcador.imagen;
+                infoImagen.alt = "Imagen de " + marcador.nombre;
+            }
+
+            // --- INICIO DE CAMBIO PARA OCULTAR DESCRIPCIÓN ---
+            const infoDescripcion = document.getElementById("infoDescripcion");
+            infoDescripcion.style.display = 'none'; // Oculta la descripción
+            infoDescripcion.textContent = ''; // Limpia el texto para asegurar
+            // --- FIN DE CAMBIO PARA OCULTAR DESCRIPCIÓN ---
+
             document.getElementById("btnIr").disabled = false;
             document.getElementById("btnIr").onclick = () => {
                 irA(marcador.latitud, marcador.longitud);
@@ -301,84 +316,111 @@ if (marcadorTemporalGIF) {
             document.getElementById("infoPanel").classList.add("show");
             resaltarMarcador(marcador.nombre);
             // Asegura que el marcador de ese tipo esté visible temporalmente
-const marcadorSeleccionado = referenciaMarcadores[marcador.nombre];
-if (marcadorSeleccionado && !mapa.hasLayer(marcadorSeleccionado)) {
-  marcadorSeleccionado.addTo(mapa);
-  marcadorSeleccionado._temporario = true; // lo marcamos como temporal
-}
-
-
+            const marcadorSeleccionado = referenciaMarcadores[marcador.nombre];
+            if (marcadorSeleccionado && !mapa.hasLayer(marcadorSeleccionado)) {
+                marcadorSeleccionado.addTo(mapa);
+                marcadorSeleccionado._temporario = true; // lo marcamos como temporal
+            }
         });
-        referenciaMarcadores[marcador.nombre] = marker;
-if (!capasPorTipo[marcador.tipo]) {
-    capasPorTipo[marcador.tipo] = L.layerGroup().addTo(mapa);
-}
+    referenciaMarcadores[marcador.nombre] = marker;
+    if (!capasPorTipo[marcador.tipo]) {
+        capasPorTipo[marcador.tipo] = L.layerGroup().addTo(mapa);
+    }
 
-capasPorTipo[marcador.tipo].addLayer(marker);
+    capasPorTipo[marcador.tipo].addLayer(marker);
 });
 layerMarcadores.addTo(mapa);
 
 // Función para buscar lugares y mostrar sugerencias
+// Función para buscar lugares y mostrar sugerencias
 function buscarLugar() {
-  const normalizar = str => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  const texto = normalizar(document.getElementById('search').value); // ← Aquí aplicas normalización
+    const normalizar = str => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const texto = normalizar(document.getElementById('search').value); // ← Aquí aplicas normalización
 
-  const resultados = marcadores.filter(marcador =>
-    normalizar(marcador.nombre).includes(texto)
-  );
+    const resultados = marcadores.filter(marcador =>
+        normalizar(marcador.nombre).includes(texto)
+    );
 
-  const suggestions = document.getElementById('suggestions');
-  suggestions.innerHTML = '';
+    const suggestions = document.getElementById('suggestions');
+    suggestions.innerHTML = '';
 
-  if (texto && resultados.length > 0) {
-    resultados.slice(0, 6).forEach(marcador => {
-      const div = document.createElement('div');
-      div.className = 'suggestion-item';
+    if (texto && resultados.length > 0) {
+        resultados.slice(0, 6).forEach(marcador => {
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
 
-      const img = document.createElement('img');
-      img.src = marcador.imagen;
+            // --- INICIO DE CAMBIO PARA OCULTAR MINIATURA EN SUGERENCIAS ---
+            const img = document.createElement('img');
+            if (marcador.tipo === 'bano' || marcador.tipo === 'estacionamiento') {
+                // Si es baño o estacionamiento, no establecemos src y podemos ocultarla o usar una imagen por defecto/espacio vacío.
+                // Por simplicidad y para que no ocupe espacio, la ocultaremos si el CSS lo permite.
+                // Alternativamente, puedes poner una imagen genérica para baños/estacionamientos si lo deseas.
+                img.style.display = 'none'; 
+                img.alt = '';
+            } else {
+                img.src = marcador.imagen;
+                img.alt = "Miniatura de " + marcador.nombre;
+                img.style.display = 'block'; // Asegurarse de que sea visible por defecto si no es baño/estacionamiento
+            }
+            // --- FIN DE CAMBIO ---
 
-      const span = document.createElement('span');
-      span.textContent = marcador.nombre;
+            const span = document.createElement('span');
+            span.textContent = marcador.nombre;
 
-      div.appendChild(img);
-      div.appendChild(span);
+            div.appendChild(img);
+            div.appendChild(span);
 
-div.addEventListener('click', () => {
-  // Mostrar marcador temporal si está oculto
-  const checkbox = document.querySelector(`#filtroTipos input[value="${marcador.tipo}"]`);
-if (checkbox && !checkbox.checked) {
-  const marcadorSeleccionado = referenciaMarcadores[marcador.nombre];
-  if (marcadorSeleccionado && !mapa.hasLayer(marcadorSeleccionado)) {
-    marcadorSeleccionado.addTo(mapa);
-    marcadorSeleccionado._temporario = true;
-  }
-}
+            div.addEventListener('click', () => {
+                // Mostrar marcador temporal si está oculto
+                const checkbox = document.querySelector(`#filtroTipos input[value="${marcador.tipo}"]`);
+                if (checkbox && !checkbox.checked) {
+                    const marcadorSeleccionado = referenciaMarcadores[marcador.nombre];
+                    if (marcadorSeleccionado && !mapa.hasLayer(marcadorSeleccionado)) {
+                        marcadorSeleccionado.addTo(mapa);
+                        marcadorSeleccionado._temporario = true;
+                    }
+                }
 
-  // Esperar a que el marcador esté visible antes de resaltarlo
-  setTimeout(() => {
-    resaltarMarcador(marcador.nombre);
-    mapa.setView([marcador.latitud, marcador.longitud], 17);
-    document.getElementById("infoTitulo").textContent = marcador.nombre;
-    document.getElementById("infoImagen").src = marcador.imagen;
-    document.getElementById("infoDescripcion").textContent = marcador.descripcion;
-    document.getElementById("btnIr").disabled = false;
-    document.getElementById("btnIr").onclick = () => {
-      irA(marcador.latitud, marcador.longitud);
-    };
-    document.getElementById("infoPanel").classList.add("show");
-  }, 50); // espera breve para asegurar render
+                // Esperar a que el marcador esté visible antes de resaltarlo
+                setTimeout(() => {
+                    resaltarMarcador(marcador.nombre);
+                    mapa.setView([marcador.latitud, marcador.longitud], 17);
+                    document.getElementById("infoTitulo").textContent = marcador.nombre;
+                    
+                    // Lógica para la imagen del infoPanel (repetida aquí por claridad, pero ya manejada en el click del marcador)
+                    const infoImagen = document.getElementById("infoImagen");
+                    if (marcador.tipo === 'bano' || marcador.tipo === 'estacionamiento') {
+                        infoImagen.style.display = 'none';
+                        infoImagen.src = '';
+                        infoImagen.alt = '';
+                    } else {
+                        infoImagen.style.display = 'block';
+                        infoImagen.src = marcador.imagen;
+                        infoImagen.alt = "Imagen de " + marcador.nombre;
+                    }
 
-  document.getElementById('search').value = '';
-  document.getElementById('suggestions').style.display = 'none';
-});
+                    // Lógica para la descripción del infoPanel (repetida aquí por claridad)
+                    const infoDescripcion = document.getElementById("infoDescripcion");
+                    infoDescripcion.style.display = 'none';
+                    infoDescripcion.textContent = '';
+                    
+                    document.getElementById("btnIr").disabled = false;
+                    document.getElementById("btnIr").onclick = () => {
+                        irA(marcador.latitud, marcador.longitud);
+                    };
+                    document.getElementById("infoPanel").classList.add("show");
+                }, 50); // espera breve para asegurar render
 
-      suggestions.appendChild(div);
-    });
-    suggestions.style.display = 'block';
-  } else {
-    suggestions.style.display = 'none';
-  }
+                document.getElementById('search').value = '';
+                document.getElementById('suggestions').style.display = 'none';
+            });
+
+            suggestions.appendChild(div);
+        });
+        suggestions.style.display = 'block';
+    } else {
+        suggestions.style.display = 'none';
+    }
 }
 
     // Escucha el evento de entrada en el campo de búsqueda

@@ -35,7 +35,7 @@ $marcadores = [
         'nombre' => 'Domo universitario',
         'latitud' => 8.623104, 
         'longitud' => -70.248127,
-        'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
+        'imagen' => 'assets/img/domo.jpg', // Ruta de la imagen
         'descripcion' => 'Domo universitario',
             'tipo' => 'recreacion',
     ],
@@ -43,7 +43,7 @@ $marcadores = [
     'nombre' => 'Cancha de futbol UNELLEZ',
     'latitud' => 8.623342847250514, 
     'longitud' => -70.25011082293045,
-    'imagen' => 'assets/img/foto.jpg',
+    'imagen' => 'assets/img/futbol.jpg',
     'descripcion' => 'Cancha de fútbol UNELLEZ',
     'tipo' => 'recreacion',
 ],
@@ -51,7 +51,7 @@ $marcadores = [
         'nombre' => 'Biblioteca UNELLEZ',
         'latitud' => 8.620025259078757, 
         'longitud' =>  -70.24742357425036,
-        'imagen' => 'assets/img/foto.jpg', // Ruta de la imagen
+        'imagen' => 'assets/img/biblioteca.jpg', // Ruta de la imagen
         'descripcion' => 'Biblioteca',
                     'tipo' => 'recreacion',
     ],
@@ -87,7 +87,7 @@ $marcadores = [
         'nombre' => 'Centro de Mejoramiento Genético',
         'latitud' => 8.631642928787615,
         'longitud' => -70.24871345913655,
-        'imagen' => 'assets/img/foto.jpg',
+        'imagen' => 'assets/img/genetico.jpg',
         'descripcion' => 'Centro de Mejoramiento Genético',
             'tipo' => 'laboratorio',
     ],
@@ -95,7 +95,7 @@ $marcadores = [
         'nombre' => 'Laguna de la Unellez',
         'latitud' => 8.635802535957929,
         'longitud' => -70.24590703928638,
-        'imagen' => 'assets/img/foto.jpg',
+        'imagen' => 'assets/img/laguna.jpg',
         'descripcion' => 'Laguna de la Unellez',
             'tipo' => 'recreacion',
     ],
@@ -167,14 +167,7 @@ $marcadores = [
                 'tipo' => 'estacionamiento',
     ],
 
-    [
-        'nombre' => 'Piscina Olímpica',
-        'latitud' => 8.621646374432867, 
-        'longitud' =>  -70.24906413848132,
-        'imagen' => 'assets/img/foto.jpg',
-        'descripcion' => 'Piscina Olímpica',
-            'tipo' => 'recreacion',
-    ],
+
 
     [
         'nombre' => 'Estacionamiento de Barinas I',
@@ -546,14 +539,7 @@ $marcadores = [
     'descripcion' => 'aula modelo p4a1',
         'tipo' => 'salon',
 ],
-[
-    'nombre' => 'aula no identificado y no utilizado',
-    'latitud' => 8.6215597,
-    'longitud' => -70.2452302,
-    'imagen' => 'assets/img/foto.jpg',
-    'descripcion' => 'aula no identificado y no utilizado',
-        'tipo' => 'salon',
-],
+
 [
     'nombre' => 'p4b3',
     'latitud' => 8.6215670,
@@ -639,7 +625,7 @@ $marcadores = [
     'nombre' => 'programa cs de la educación',
     'latitud' => 8.6218385,
     'longitud' => -70.2450917,
-    'imagen' => 'assets/img/foto.jpg',
+    'imagen' => 'assets/img/programa_cs_educacion.jpg',
     'descripcion' => 'programa cs de la educación',
         'tipo' => 'salon',
 ],
@@ -655,7 +641,7 @@ $marcadores = [
     'nombre' => 'p5b6',
     'latitud' => 8.6218398,
     'longitud' => -70.2451890,
-    'imagen' => 'assets/img/p5b6.jpg',
+    'imagen' => 'assets/img/p5b6_barinas1.jpg',
     'descripcion' => 'p5b6',
         'tipo' => 'salon',
 ],
@@ -663,7 +649,7 @@ $marcadores = [
     'nombre' => 'p5b7',
     'latitud' => 8.6218524,
     'longitud' => -70.2452862,
-    'imagen' => 'assets/img/p5b7.jpg',
+    'imagen' => 'assets/img/p5b7_barinas1.jpg',
     'descripcion' => 'p5b7',
         'tipo' => 'salon',
 ],
@@ -693,7 +679,7 @@ $marcadores = [
 ],
 
 [
-    'nombre' => 'baños 1',
+    'nombre' => 'baños 6',
     'latitud' => 8.6220241,
     'longitud' => -70.2448426,
     'imagen' => 'assets/img/foto.jpg',
@@ -701,7 +687,7 @@ $marcadores = [
     'tipo' => 'bano',
 ],
 [
-    'nombre' => 'baños 2',
+    'nombre' => 'baños 5',
     'latitud' => 8.6217765,
     'longitud' => -70.2447853,
     'imagen' => 'assets/img/foto.jpg',
@@ -709,7 +695,7 @@ $marcadores = [
     'tipo' => 'bano',
 ],
 [
-    'nombre' => 'baños 3',
+    'nombre' => 'baños 4',
     'latitud' => 8.6214794,
     'longitud' => -70.2448818,
     'imagen' => 'assets/img/foto.jpg',
@@ -717,7 +703,7 @@ $marcadores = [
     'tipo' => 'bano',
 ],
 [
-    'nombre' => 'baños 4',
+    'nombre' => 'baños 3',
     'latitud' => 8.6212262,
     'longitud' => -70.2448704,
     'imagen' => 'assets/img/foto.jpg',
@@ -725,7 +711,7 @@ $marcadores = [
     'tipo' => 'bano',
 ],
 [
-    'nombre' => 'baños 5',
+    'nombre' => 'baños 2',
     'latitud' => 8.6209408,
     'longitud' => -70.2448282,
     'imagen' => 'assets/img/foto.jpg',
@@ -733,7 +719,7 @@ $marcadores = [
     'tipo' => 'bano',
 ],
 [
-    'nombre' => 'baños 6',
+    'nombre' => 'baños 1',
     'latitud' => 8.6206239,
     'longitud' => -70.2445442,
     'imagen' => 'assets/img/foto.jpg',
@@ -1223,7 +1209,7 @@ $marcadores = [
     'tipo' => 'salon',
 ],
 [
-    'nombre' => 'baños',
+    'nombre' => 'baños 7',
     'latitud' => 8.6242265,
     'longitud' => -70.2465639,
     'imagen' => 'assets/img/banos_barinas2.jpg',
@@ -1351,7 +1337,7 @@ $marcadores = [
     'tipo' => 'salon',
 ],
 [
-    'nombre' => 'baños',
+    'nombre' => 'baños 8',
     'latitud' => 8.6244602,
     'longitud' => -70.2466749,
     'imagen' => 'assets/img/banos_barinas2.jpg',
@@ -1399,7 +1385,7 @@ $marcadores = [
     'tipo' => 'laboratorio',
 ],
 [
-    'nombre' => 'baño',
+    'nombre' => 'baños 9',
     'latitud' => 8.624735,
     'longitud' => -70.2467644,
     'imagen' => 'assets/img/bano_barinas2.jpg',
@@ -1496,21 +1482,14 @@ $marcadores = [
     'tipo' => 'cubiculo',
 ],
 [
-    'nombre' => 'baño',
+    'nombre' => 'baños 10',
     'latitud' => 8.6251109,
     'longitud' => -70.2469522,
     'imagen' => 'assets/img/bano_barinas2.jpg',
     'descripcion' => 'baño',
     'tipo' => 'bano',
 ],
-[
-    'nombre' => 'baño',
-    'latitud' => 8.6251109,
-    'longitud' => -70.2469522,
-    'imagen' => 'assets/img/bano_barinas2.jpg',
-    'descripcion' => 'baño',
-    'tipo' => 'bano',
-],
+
 [
     'nombre' => 'sala de conferencias',
     'latitud' => 8.6256253,
@@ -1536,7 +1515,7 @@ $marcadores = [
     'tipo' => 'salon',
 ],
 [
-    'nombre' => 'baños',
+    'nombre' => 'baños 11',
     'latitud' => 8.6256346,
     'longitud' => -70.2472365,
     'imagen' => 'assets/img/banos_barinas2.jpg',

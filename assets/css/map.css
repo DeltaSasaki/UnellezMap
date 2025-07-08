@@ -158,6 +158,11 @@ main {
   cursor: pointer;
 }
 
+/* Estilo para los elementos de sugerencia del buscador */
+.suggestions-container .suggestion-item span {
+    font-weight: bold; /* Hace el texto en negrita */
+}
+
 .suggestion-item img {
   width: 40px;
   height: 40px;
