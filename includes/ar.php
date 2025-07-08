@@ -549,19 +549,25 @@ background: #232a34; /* Fondo sólido oscuro */
       gpsPrecision.style.display = "block";
       gpsPrecision.textContent = `Precisión GPS: ${precision} m`;
 
-      if (indicePuntoActual >= ruta.length) {
-        contador.textContent = "¡Has llegado a tu destino!";
-        mostrarIndicadorLlegada();
-        const vozFinal = new SpeechSynthesisUtterance("¡Has llegado a tu destino!");
-        vozFinal.lang = "es-ES";
-        window.speechSynthesis.speak(vozFinal);
+const ultimaPosicion = ruta.length - 1;
 
-        // Redirigir al mapa después de 4 segundos
-        setTimeout(() => {
-          window.location.href = "../index.php";
-        }, 4000);
-        return;
-      }
+// Detectar si llegaste al destino, con margen basado en precisión GPS
+const margenTolerancia = precision ? precision : 20; // fallback a 20m
+
+if (indicePuntoActual === ultimaPosicion && distancia < margenTolerancia) {
+  contador.textContent = "¡Has llegado a tu destino!";
+  mostrarIndicadorLlegada();
+  const vozFinal = new SpeechSynthesisUtterance("¡Has llegado a tu destino!");
+  vozFinal.lang = "es-ES";
+  window.speechSynthesis.speak(vozFinal);
+
+  // Redirigir al mapa después de 4 segundos
+  setTimeout(() => {
+    window.location.href = "../index.php";
+  }, 4000);
+  return;
+}
+
 
       const objetivo = ruta[indicePuntoActual];
       const distancia = distanciaMetros(lat, lng, objetivo[0], objetivo[1]);
@@ -575,7 +581,7 @@ background: #232a34; /* Fondo sólido oscuro */
         ? (distanciaRestante / 1000).toFixed(2) + " km"
         : Math.round(distanciaRestante) + " m";
 
-      if (distancia < 10 && indicePuntoActual < ruta.length - 1) {
+if (distancia < 18 && indicePuntoActual < ruta.length - 1) {
         indicePuntoActual++;
         const nuevo = ruta[indicePuntoActual];
         const nuevoAngulo = calcularAngulo(lat, lng, nuevo[0], nuevo[1]);
